@@ -5,9 +5,10 @@ class Env(object):
     observation_space: The state of the environment
     history_space: The list of previous actions performed on the board
     """
-    action_space = None
-    observation_space = None
-    history_space = None
+    def __init__(self):
+        self._action_space = None
+        self._observation_space = None
+        self._history_space = None
 
     """
     Logic for stepping through a time-frame after executing an action

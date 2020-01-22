@@ -1,6 +1,6 @@
 import numpy
 
-from envs.puzzle import IndonesianEnv
+from envs.indonesian_puzzle_env import IndonesianPuzzleEnv
 
 state = [0, 1, 0,
          1, 1, 1,
@@ -9,7 +9,7 @@ state = [0, 1, 0,
 state = numpy.array(state)
 state = state.reshape((3, 3))
 
-board = IndonesianEnv(state)
+board = IndonesianPuzzleEnv(state)
 
 
 var = board.action_space
