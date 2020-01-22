@@ -3,7 +3,6 @@ import math
 
 
 def solve(init_matrix):
-
     size = init_matrix.shape[0]
     side = int(math.sqrt(size))
     b = numpy.ones(size)
@@ -30,3 +29,5 @@ def solve(init_matrix):
     x = x.round()
     x = x % 2
     return x.reshape((side, side))
+# warning, will not work if the matrix is singular.
+# the equation is not as accurate as you think it is because of rounding

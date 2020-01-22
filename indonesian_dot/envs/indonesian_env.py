@@ -3,7 +3,7 @@ import numpy
 from indonesian_dot import Env
 
 
-class IndonesianBoard(Env):
+class IndonesianEnv(Env):
 
     def __init__(self, init_state):
         self.dimension = init_state.shape[0]
