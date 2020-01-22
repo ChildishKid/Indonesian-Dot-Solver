@@ -1,5 +1,6 @@
-import numpy
 import math
+
+import numpy
 
 
 def solve(init_matrix):
