@@ -1,6 +1,8 @@
-import spaces
+from spaces.action_space import ActionSpace
 
-shapes = spaces.make()
+dimension = 4
 
-for x in shapes:
-    print(x, '\n')
+action_space = ActionSpace(dimension=dimension)
+
+for i in range(dimension**2):
+    print(action_space.sample(i))
