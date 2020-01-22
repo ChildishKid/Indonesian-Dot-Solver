@@ -1,53 +1,44 @@
-# Indonesian_Dot_Solver
+# Indonesian Dot
 
-## File Structure
+## File/Folder Structure
 ```angular2html
-Indonesian-Dot-Solver
-├── src
-|   ├── genericSolution.py
-|   ├── agent.py
-|   ├── environment.py
-|   ├── space.py
-├── res
-├── test
+.
+├── indonesian_dot (root here)
+|   ├── agents
+|   ├── envs
+|   ├── spaces
+|   ├── utils
+|   ├── tests
+|   ├── core.py
+├── .gitignore
 ├── COMP_472_2020_Winter_Project_1.pdf
 ├── README.md
 ```
 ```
 
-src:
-    Contains all python source code to solve the Indonesian puzzle.
+indonesian_dot:
+    The main python package for solving the puzzle
 
-    src/genericSolution.py:
-        Contains a mathematical solution to the project's requirement.
-        This must be removed before submission.
+    indonesian_dot/utils:
+        Any misc. python files or other files that are not required during the final submission
 
-    src/agent.py:
-        This file contains our implementation for DFS, BFS, and A* generic algorithms.
-        Classes residing in an Agent will be used in Space.py
-        Classes within Environment.py will use a parameter of generic type referencing the Agent.py
+    indonesian_dot/agents:
+        Our implementation for DFS, BFS, and A* generic algorithms.
+        
+    indonesian_dot/envs:
+        All implementations for the logic of the Indonesian Dot Puzzle board.
 
-    src/environment.py:
-        This file contains all implementations for the logic of the Indonesian Dot Puzzle board.
-        Concerns relating to the board itself are handled here.
-
-    src/space.py:
-        This file resolves all interaction concerns between the program and the user's input when the game is started.
+    indonesian_dot/spaces:
+        Resolves all interaction concerns between the program and the user's input when the game is started.
         Parsing, Resolution, and calls are made here.
 
-        We may change this at a later time to be the __init__.py file
+    indonesian_dot/core.py:
+        All abstract classes: ["Agent","Env","Space"] here.
+
+    indonesian_dot/tests:
+        Test folder for only core applications. For other tests, refer to the folder 'tests' in the specific package.
 
 
-res:
-    Contains all resources that are optional or mandatory for the project to run.
-
-
-test:
-    Contains all files used for testing the functionality of classes in the src folder.
-
-
-COMP_472_2020_Winter_Project_1.pdf:
-    The business requirements of the project
 ```
 
 

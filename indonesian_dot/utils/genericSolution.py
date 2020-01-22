@@ -29,12 +29,4 @@ def solve(init_matrix):
     x = numpy.linalg.lstsq(a, b, None)[0]
     x = x.round()
     x = x % 2
-    return x.reshape((side,side))
-
-
-# warning, will not work if the matrix is singular.
-# the equation is not as accurate as you think it is because of rounding
-example = numpy.array([0, 0, 1,
-                       0, 1, 0,
-                       1, 0, 0])
-print(solve(example))
+    return x.reshape((side, side))
