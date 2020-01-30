@@ -31,12 +31,6 @@ class Graph(object):
     def remove_edge(self, e):
         raise NotImplementedError
 
-    def node_count(self):
-        raise NotImplementedError
-
-    def edge_count(self):
-        raise NotImplementedError
-
     def contains_node(self, n):
         raise NotImplementedError
 
