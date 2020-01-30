@@ -1,4 +1,4 @@
-from spaces import DiGraph, graph_metadata
+from spaces import DiGraph
 
 graph = DiGraph()
 
