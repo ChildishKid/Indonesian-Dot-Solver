@@ -136,16 +136,3 @@ class DiGraph(Graph):
         new_copy.add_nodes((n, deepcopy(attr)) for n, attr in self._node)
         new_copy.add_edges((e, deepcopy(attr)) for e, attr in self._edge)
 
-    def __getattr__(self, item):
-        try:
-            if type(item) is int:
-                return self._node[item]
-            elif type(item) is tuple:
-                return self._edge[item]
-            elif item in self._metadata:
-                return self._metadata[item]
-        except KeyError:
-            pass
-
-        return None
-
