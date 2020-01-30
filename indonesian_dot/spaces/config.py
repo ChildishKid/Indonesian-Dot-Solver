@@ -1,10 +1,12 @@
 from collections import OrderedDict
+
 """
 Configuration of vanilla data structure provision through builder functions.
 
 These functions may be implemented outside of the Graph class, and the Graph classes will manipulate or react to 
 the data within them
 """
+
 
 def graph_metadata():
     return OrderedDict([
@@ -37,14 +39,18 @@ def node_attr():
 def node_pred():
     return OrderedDict()
 
+
 def node_pred_builder():
     return OrderedDict()
+
 
 def node_suc():
     return OrderedDict()
 
+
 def node_suc_builder():
     return OrderedDict()
+
 
 def edge():
     return OrderedDict()
