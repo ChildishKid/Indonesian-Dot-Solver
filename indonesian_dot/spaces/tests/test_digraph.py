@@ -5,13 +5,13 @@ graph = DiGraph()
 
 def create_node_with_no_attributes():
     graph.add_node(1)
-    n_s = graph.__getattr__(1)
+    n_s = graph.node_at(1)
     assert all(y is None for y in n_s.values())
 
 
 def create_node_with_some_attributes():
     graph.add_node(2, degree=3, depth=2)
-    n_s = graph.__getattr__(2)
+    n_s = graph.node_at(2)
     assert n_s['degree'] == 3 and n_s['depth'] == 2
     print(n_s)
 
@@ -21,9 +21,9 @@ def create_nodes():
 
     graph.add_nodes(nodes)
 
-    n_s = graph.__getattr__(3)
-    nn_s = graph.__getattr__(4)
-    nnn_s = graph.__getattr__(5)
+    n_s = graph.node_at(3)
+    nn_s = graph.node_at(4)
+    nnn_s = graph.node_at(5)
 
     assert n_s['depth'] == 2 and n_s['degree'] is None \
            and nn_s['degree'] == 4 and nn_s['depth'] is None \
@@ -49,8 +49,8 @@ def add_edge_with_no_attributes():
 def add_edge_with_attributes():
     graph.add_edges([((1, 2), {'weight': 1}), ((2, 3), {'action': 'B1'})])
     assert graph.contains_edge((1, 2)) and graph.contains_edge((2, 3))
-    n_s = graph.__getattr__((1, 2))
-    nn_s = graph.__getattr__((2, 3))
+    n_s = graph.edge_at((1, 2))
+    nn_s = graph.edge_at((2, 3))
     assert n_s['action'] is None and n_s['weight'] == 1 \
            and nn_s['action'] == 'B1' and nn_s['weight'] is None
 

@@ -21,12 +21,6 @@ class DiGraph(Graph):
 
         self._metadata['is_directed'] = True
 
-        if self._metadata['node_start'] is not None:
-            self._add_node(self._metadata['node_start'])
-
-        if self._metadata['node_end'] is not None:
-            self._add_node(self._metadata['node_end'])
-
     def add_node(self, n, **attributes):
         if n not in self._node:
             self._node[n] = self._node_attr_builder()
@@ -64,6 +58,12 @@ class DiGraph(Graph):
         del self._node_pred[n]
         self._metadata['node_count'] -= 1
 
+    def contains_node(self, n):
+        return n in self._node
+
+    def node_at(self, n):
+        return self._node[n]
+
     def add_edge(self, e, **attributes):
         i, j = e
 
@@ -80,7 +80,6 @@ class DiGraph(Graph):
         self._edge[e].update(attributes)
         self._node_suc[i][j] = self._edge[e]
         self._node_pred[j][i] = self._edge[e]
-
 
     def add_edges(self, edges_and_attributes):
         try:
@@ -102,12 +101,11 @@ class DiGraph(Graph):
         except KeyError:
             raise Warning(f"DiGraph::remove_edge(self, e)::Edge {i}-{j} does not exist.")
 
-
-    def contains_node(self, n):
-        return n in self._node
-
     def contains_edge(self, e):
         return e in self._edge
+
+    def edge_at(self, e):
+        return self._edge[e]
 
     def predecessors_of(self, n):
         try:
@@ -135,4 +133,7 @@ class DiGraph(Graph):
         new_copy = self.__class__()
         new_copy.add_nodes((n, deepcopy(attr)) for n, attr in self._node)
         new_copy.add_edges((e, deepcopy(attr)) for e, attr in self._edge)
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin

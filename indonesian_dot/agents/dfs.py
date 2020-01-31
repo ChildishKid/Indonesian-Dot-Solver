@@ -1,3 +1,4 @@
+from spaces import DiGraph
 from utils import helper
 import numpy as np
 
@@ -38,7 +39,7 @@ class DFS:
                     new_index = index * (y_max + 1) * (x_max + 1) + x + y + 1
                     graph.add_node(new_index, move=new_move, value=new_value, depth=depth)
                     graph.add_edge((index, new_index))  # Not used for included for sake of completion
-                    new_node = graph.__getattr__(new_index)
+                    new_node = graph.node_at(new_index)
 
                     # Append to search since we visit it
                     search.append((0, 0, 0, new_value))
@@ -59,18 +60,16 @@ class DFS:
             return "Failed"
 
 
-"""
-== SAMPLE TEST ===
+# == SAMPLE TEST ===
 z = "111001011"
-Z = "1111111111111111"
-# w = np.array(list(z)).reshape(3, 3)
-w = np.array(list(Z)).reshape(4, 4)
+# Z = "1111111111111111"
+w = np.array(list(z)).reshape(3, 3)
+# w = np.array(list(Z)).reshape(4, 4)
 close = []
 open = []
 solution = []
 graph = DiGraph()
 graph.add_node(0, move="0", value=w, depth=0)
-initial_node = graph.__getattr__(0)
+initial_node = graph.node_at(0)
 DFS.start(initial_node, open, solution, close, 9, graph, 0)
 print(solution)
-"""
