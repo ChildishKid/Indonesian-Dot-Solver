@@ -1,4 +1,4 @@
-from spaces import DiGraph, graph_metadata
+from spaces import DiGraph
 
 graph = DiGraph()
 
@@ -31,6 +31,7 @@ def create_nodes():
     print(n_s)
     print(nn_s)
     print(nnn_s)
+
 
 def remove_node():
     n_s = list(graph.__getattr__('node_struct'))
