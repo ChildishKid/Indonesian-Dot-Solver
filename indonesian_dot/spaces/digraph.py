@@ -133,7 +133,3 @@ class DiGraph(Graph):
         new_copy = self.__class__()
         new_copy.add_nodes((n, deepcopy(attr)) for n, attr in self._node)
         new_copy.add_edges((e, deepcopy(attr)) for e, attr in self._edge)
-<<<<<<< HEAD
-
-=======
->>>>>>> origin
