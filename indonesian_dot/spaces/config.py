@@ -56,6 +56,6 @@ def edge():
 
 def edge_attr():
     return OrderedDict([
-        ('action', None),
-        ('weight', None)
+        ('id', None),
+        ('cost', None)
     ])
