@@ -14,8 +14,6 @@ def graph_metadata():
         ('is_directed', None),
         ('node_count', 0),
         ('edge_count', 0),
-        ('node_start', None),
-        ('node_end', None),
         ('node_struct', node()),
         ('node_attr', node_attr),
         ('node_pred', None),

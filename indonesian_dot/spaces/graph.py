@@ -22,6 +22,12 @@ class Graph(object):
     def remove_node(self, n):
         raise NotImplementedError
 
+    def contains_node(self, n):
+        raise NotImplementedError
+
+    def node_at(self, n):
+        raise NotImplementedError
+
     def add_edge(self, e, **attributes):
         raise NotImplementedError
 
@@ -31,10 +37,10 @@ class Graph(object):
     def remove_edge(self, e):
         raise NotImplementedError
 
-    def contains_node(self, n):
+    def contains_edge(self, e):
         raise NotImplementedError
 
-    def contains_edge(self, e):
+    def edge_at(self, e):
         raise NotImplementedError
 
     def reset(self):
@@ -45,16 +51,9 @@ class Graph(object):
 
     def __getattr__(self, item):
         try:
-            if type(item) is int:
-                return self._node[item]
-            elif type(item) is tuple:
-                return self._edge[item]
-            elif item in self._metadata:
-                return self._metadata[item]
+            return self._metadata[item]
         except KeyError:
-            pass
-
-        return None
+            return None
 
     @staticmethod
     def plot(obj):
@@ -69,7 +68,7 @@ class Graph(object):
         ii = 0
 
         _, area = plt.subplots(figsize=(n_size, n_size))
-        area.plot(vertices[:, 0], vertices[:, 1], 'o', color='red', markersize='10.0', alpha=0.5)
+        area.plot(vertices[:, 0], vertices[:, 1], 'o', color='red', markersize='12.0', alpha=0.5)
 
         for n in nodes:
             plt.text(vertices[ii][0], vertices[ii][1], n)
