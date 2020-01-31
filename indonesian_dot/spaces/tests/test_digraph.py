@@ -13,6 +13,7 @@ def create_node_with_some_attributes():
     graph.add_node(2, degree=3, depth=2)
     n_s = graph.__getattr__(2)
     assert n_s['degree'] == 3 and n_s['depth'] == 2
+    print(n_s)
 
 
 def create_nodes():
@@ -27,6 +28,9 @@ def create_nodes():
     assert n_s['depth'] == 2 and n_s['degree'] is None \
            and nn_s['degree'] == 4 and nn_s['depth'] is None \
            and all(y is None for y in nnn_s.values())
+    print(n_s)
+    print(nn_s)
+    print(nnn_s)
 
 
 def remove_node():
