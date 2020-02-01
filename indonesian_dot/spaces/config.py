@@ -10,26 +10,25 @@ the data within them
 
 def graph_metadata():
     return OrderedDict([
+        ('node_struct', node_struct),
+        ('node_attr', node_attr),
+        ('edge_struct', edge_struct),
+        ('edge_attr', edge_attr),
         ('max_depth', 50),
         ('is_directed', None),
         ('node_count', 0),
-        ('edge_count', 0),
-        ('node_struct', node()),
-        ('node_attr', node_attr),
-        ('node_pred', None),
-        ('node_suc', None),
-        ('edge_struct', edge()),
-        ('edge_attr', edge_attr)
+        ('edge_count', 0)
     ])
 
 
-def node():
+def node_struct():
     return OrderedDict()
 
 
 def node_attr():
     return OrderedDict([
         ('degree', None),
+        ('value', None),
         ('depth', None),
     ])
 
@@ -50,7 +49,7 @@ def node_suc_builder():
     return OrderedDict()
 
 
-def edge():
+def edge_struct():
     return OrderedDict()
 
 
