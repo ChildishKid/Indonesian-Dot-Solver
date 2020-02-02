@@ -66,10 +66,16 @@ z = "111001011"
 w = np.array(list(z)).reshape(3, 3)
 # w = np.array(list(Z)).reshape(4, 4)
 close = []
-open = []
+open_list = []
 solution = []
 graph = DiGraph()
 graph.add_node(0, move="0", value=w, depth=0)
 initial_node = graph.node_at(0)
-DFS.start(initial_node, open, solution, close, 9, graph, 0)
+DFS.start(initial_node, open_list, solution, close, 9, graph, 0)
 print(solution)
+#test writing solution to a file
+file_write = open("test.txt", "w")
+for element in reversed(solution):
+    file_write.write(' '.join(element))
+    file_write.write('\n')
+file_write.close()
