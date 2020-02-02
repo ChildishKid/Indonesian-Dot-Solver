@@ -61,7 +61,7 @@ class DFS:
 
 
 # == SAMPLE TEST ===
-z = "111001011"
+"""z = "111001011"
 # Z = "1111111111111111"
 w = np.array(list(z)).reshape(3, 3)
 # w = np.array(list(Z)).reshape(4, 4)
@@ -72,10 +72,10 @@ graph = DiGraph()
 graph.add_node(0, move="0", value=w, depth=0)
 initial_node = graph.node_at(0)
 DFS.start(initial_node, open_list, solution, close, 9, graph, 0)
-print(solution)
+print(solution)"""
 #test writing solution to a file
-file_write = open("test.txt", "w")
+"""file_write = open("test.txt", "w")
 for element in reversed(solution):
     file_write.write(' '.join(element))
     file_write.write('\n')
-file_write.close()
+file_write.close()"""
