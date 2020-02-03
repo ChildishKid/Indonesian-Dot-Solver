@@ -16,8 +16,8 @@ Example:
 """
 
 
-def action_space(size: int, start: int = 0):
-    dim = int(sqrt(size))
+def action_space(dim: int, start: int = 0):
+    size = dim**2
     actions = {}
 
     for i in range(start, size):

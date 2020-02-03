@@ -9,6 +9,6 @@ goal = "0000000000000000"
 size = len(start)
 actions = action_space(size)
 
-search, sol = dfs(start, goal)
+search, sol = dfs(start=start, goal=goal)
 print(search)
 print(sol)
