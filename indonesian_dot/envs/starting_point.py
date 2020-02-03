@@ -1,9 +1,15 @@
 from agents.dfs import DFS
 from spaces import DiGraph
 import numpy
+import argparse
 
 #act as starting point for project
-with open("test_input.txt", "r") as file_read:#parse file
+    #command line argument stuff
+command_line_parser = argparse.ArgumentParser(description="Commandline arguments for program.")
+command_line_parser.add_argument('--file_path', help='path to file to be read')
+command_line_arguments = command_line_parser.parse_args()
+
+with open(command_line_arguments.file_path, "r") as file_read:#parse file
     if file_read != 'r':
         file_contents = file_read.readline()#assuming only one line to read
         file_line = file_contents.split(" ")#could instead overwrite file_contents variable
