@@ -5,11 +5,6 @@ def dfs(**kwargs):
     max_depth = kwargs['max_depth']
     act_space = action_space(kwargs['size'])
 
-def dfs(**kwargs):
-    start = kwargs['start']
-    max_depth = kwargs['max_depth']
-    act_space = action_space(kwargs['size'])
-
     search_log = []
     solution_log = []
 
