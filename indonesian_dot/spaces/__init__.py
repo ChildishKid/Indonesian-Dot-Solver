@@ -1,4 +1,2 @@
-from .config import *
-from .graph import *
-from .digraph import *
+from .action_space import action_space
 
