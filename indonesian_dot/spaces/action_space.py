@@ -1,5 +1,3 @@
-from math import sqrt
-
 """
 The function returns a dictionary containing the key of the action and it's corresponding integer value.
 

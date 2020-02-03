@@ -1,6 +1,9 @@
 from spaces import action_space
 
-__all__ = {"dfs"}
+def dfs(**kwargs):
+    start = kwargs['start']
+    max_depth = kwargs['max_depth']
+    act_space = action_space(kwargs['size'])
 
 def dfs(**kwargs):
     start = kwargs['start']
