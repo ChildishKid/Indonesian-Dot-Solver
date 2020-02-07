@@ -44,7 +44,7 @@ search_log:
 
 
 def __dfs(act_space, state_space, search_log, solution_log, max_depth=10):
-    search_log.append(state_space)
+    search_log.append(f'0 0 {state_space}')
     if int(state_space, 2) == 0:
         return True
     elif max_depth <= 0 or not act_space:
@@ -66,5 +66,3 @@ def __dfs(act_space, state_space, search_log, solution_log, max_depth=10):
         if ans:
             solution_log.append(f'{k} {v}')
             return True
-
-        search_log.append(state_space)

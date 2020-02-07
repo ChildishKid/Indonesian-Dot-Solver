@@ -14,11 +14,11 @@ Example:
 """
 
 
-def action_space(dim: int, start: int = 0):
+def action_space(dim: int):
     size = dim**2
     actions = {}
 
-    for i in range(start, size):
+    for i in range(size):
         val = sum([2 ** (size - 1 - x) for x in
                    [i - dim,
                     i - 1 if i % dim > 0 else -1,

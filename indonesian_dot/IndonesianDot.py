@@ -2,14 +2,14 @@ from os import getcwd
 from os.path import isfile
 from time import time
 
-
+from agents.bfs import bfs
 from agents.config import agent_dict
 from agents.dfs import dfs
 
 DEFAULT_DIR = getcwd()
 DEFAULT_PATH = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
 DEFAULT_FILE = DEFAULT_PATH + 'test'
-FUNCTION = [dfs]
+FUNCTION = [dfs, bfs]
 
 
 def internal_error(msg):
@@ -54,14 +54,14 @@ except (ValueError, AssertionError, TypeError):
 del lines
 del curr_line
 
-start = time()
 
-for i in range(0, len(commands)):
-    for j in range(len(FUNCTION)):
+for j in range(len(FUNCTION)):
+    start = time()
+    for i in range(0, len(commands)):
         func = FUNCTION[j]
         search, sol = func(**commands[i])
         
-        search = ['0 0 ' + str(s) + '\n' for s in search]
+        search = [ str(s) + '\n' for s in search]
         sol = [str(s) + '\n' for s in sol]
         reg = DEFAULT_PATH + str(i + 1) + '_' + func.__name__ + '_'
 
@@ -72,6 +72,5 @@ for i in range(0, len(commands)):
         f = open(reg + 'solution', 'w')
         f.writelines(sol)
         f.close()
-stop = time()
-
-print(f'\033[92m Indonesian Dot Puzzle solved {len(commands)} puzzles in {(stop - start) * 1000:.3} ms. \033[0m')
+    stop = time()
+    print(f'\033[92m Indonesian Dot Puzzle solved {len(commands)} puzzles in {(stop - start) * 1000:.3} ms using {FUNCTION[j].__name__}. \033[0m')
