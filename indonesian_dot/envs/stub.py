@@ -23,7 +23,7 @@ class stub(object):
         action_dict = {}
         for k, v in stub.__action_space:
             # xor it with the integer value of the action provided (i.e 'A1'), and convert to string
-            value = f'{v ^ new_state:{format}}'
+            value = f'{v ^ new_state:{stub.__format}}'
             # add the key of the action (i.e 'A1') and the value of the new state to action_dict
             action_dict[k] = value
 
@@ -45,10 +45,21 @@ class stub(object):
         self.current_state = self.next_actions[action]
         return self.sample()
 
+    def revert(self, state):
+        # DFS can ask to revert the puzzle to a state it already knows about
+
+        if state not in stub.__states:
+            raise ValueError
+
+        self.current_state = state
+        self.next_actions = stub.__states[state]
+
+    # reset the entire puzzle. No big usecase here.. just there
     def reset(self, state, size):
         del stub.__states
         del stub.__action_space
 
+        self.current_state = state
         stub.__action_space = action_space(size)
         stub.__format = '0' + str(len(self.current_state)) + 'b'
         stub.__states = {}
