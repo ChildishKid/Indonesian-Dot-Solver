@@ -33,3 +33,5 @@ No additional modules are needed for running the application
 Rani Rafid - 26975852\
 Gabriel Haoois - 40058821\
 Manpreet Tahim - 26592006
+
+[Github](https://github.com/Ra-Ni/Indonesian-Dot-Solver)
