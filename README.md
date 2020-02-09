@@ -27,3 +27,9 @@ No additional modules are needed for running the application
     ```
 
 **Note** the program will only run successfully if the path has a 'resources' folder within 'indoensian_dot' folder:
+
+## Credits
+
+Rani Rafid - 26975852\
+Gabriel Haoois - 40058821\
+Manpreet Tahim - 26592006
