@@ -15,19 +15,39 @@ No additional modules are needed for running the application
 
 ## Instructions
 
-1. Move into the directory 'indonesian_dot':
+1. Clone the repository:
     ```shell script
-    path = ($(find $HOME -name indonesian_dot))
-    cd ${path[0]}
+    git clone git@github.com:Ra-Ni/Indonesian-Dot-Solver.git
+    ```
+   **Note**: The github repository is currently private and not accessible to the public.
+   
+2. Move into the directory 'indonesian_dot':
+    
+   ```shell script
+     cd indonesian_dot
     ```
 
-2. Run the python module 'indonesian_dot.py':
+3. Run the python module 'indonesian_dot.py':
     ```shell script
-    py indonesian_dot.py
+        py indonesian_dot.py
     ```
 
-**Note** the program will only run successfully if the path has a 'resources' folder within 'indoensian_dot' folder:
+**Note**: the program will only run successfully if the *resources* folder exists within *indoensian_dot* folder
 
+## Configuration
+
+1. Move into resources:
+    ```shell script
+    cd resources
+    ```
+2. Change the *test* file to include other parameters to test:
+    ```shell script
+    vim test
+    ```
+   or
+   ```shell script
+    nano test
+    ```
 ## Credits
 
 Rani Rafid - 26975852\
