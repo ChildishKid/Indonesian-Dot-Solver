@@ -1,46 +1,29 @@
-# Indonesian Dot
+# Indonesian Dot - Puzzle Solver
 
-## File/Folder Structure
-```angular2html
-.
-├── indonesian_dot (root here)
-|   ├── agents
-|   ├── envs
-|   ├── spaces
-|   ├── utils
-|   ├── tests
-|   ├── core.py
-├── .gitignore
-├── COMP_472_2020_Winter_Project_1.pdf
-├── README.md
-```
-```
+## Introduction
 
-indonesian_dot:
-    The main python package for solving the puzzle
+The Indonesian Dot Puzzle is played on a n x n board. On each position of the board, a wooden token is placed.
+Each token has 2 sides: one with a white dot (w), and the other with a black dot (b). Initially, the tokens are
+placed on the board on a random side, and the goal is to find the smallest number of moves to bring the board
+to its goal configuration, where all tokens have their white side up (w).
 
-    indonesian_dot/utils:
-        Any misc. python files or other files that are not required during the final submission
+## Dependencies
 
-    indonesian_dot/agents:
-        Our implementation for DFS, BFS, and A* generic algorithms.
-        
-    indonesian_dot/envs:
-        All implementations for the logic of the Indonesian Dot Puzzle board.
+- Python 3.x
 
-    indonesian_dot/spaces:
-        Resolves all interaction concerns between the program and the user's input when the game is started.
-        Parsing, Resolution, and calls are made here.
+No additional modules are needed for running the application
 
-    indonesian_dot/core.py:
-        All abstract classes: ["Agent","Env","Space"] here.
+## Instructions
 
-    indonesian_dot/tests:
-        Test folder for only core applications. For other tests, refer to the folder 'tests' in the specific package.
+1. Move into the directory 'indonesian_dot':
+    ```shell script
+    path = ($(find $HOME -name indonesian_dot))
+    cd ${path[0]}
+    ```
 
+2. Run the python module 'indonesian_dot.py':
+    ```shell script
+    py indonesian_dot.py
+    ```
 
-```
-
-
-
-
+**Note** the program will only run successfully if the path has a 'resources' folder within 'indoensian_dot' folder:

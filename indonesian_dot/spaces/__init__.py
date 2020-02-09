@@ -1,3 +1,3 @@
-from .action_space import action_space
+from .space import sample
 
-__all__ = {"action_space"}
+__all__ = {"sample"}
