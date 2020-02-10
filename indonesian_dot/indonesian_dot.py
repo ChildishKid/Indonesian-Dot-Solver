@@ -1,4 +1,5 @@
-import cProfile
+from argparse import ArgumentParser
+from logging import info, getLogger, INFO
 from os import getcwd
 from os.path import isfile
 from time import time
@@ -22,6 +23,13 @@ ARGS = ['size',
         'max_l',
         'state'
         ]
+
+parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
+parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
+args = parser.parse_args()
+
+if args.verbose:
+    getLogger().setLevel(INFO)
 
 
 # This function is response for printing general error messages
@@ -54,6 +62,7 @@ commands = []
 lines = open(DEFAULT_FILE).readlines()
 curr_line = 1
 
+info(f"Reading the contents of '{DEFAULT_FILE}'")
 try:
     for line in lines:
         if line == '\n':
@@ -87,24 +96,25 @@ It will then run each agent in $FUNCTION against the commands
 The output is stored in '../resources/_<#>_<name($FUNCTION)>_<search|solution>'
 
 """
+
 responses = {}
 count = 1
 for j in FUNCTION:
     agent = Agent.make(j)
     start = time()
     for i in commands:
+        info(f'Agent {j} is running configuration {i}')
         e = Env.make('puzzle', **i)
-
-        cProfile.run('agent.run(environment=e, **i)')
-        # sol, search = agent.run(environment=e, **i)
-        # responses[f'{DEFAULT_PATH}{count}_{j}_search'] = '\n'.join(search)
-        # responses[f'{DEFAULT_PATH}{count}_{j}_solution'] = '\n'.join(sol)
+        sol, search = agent.run(environment=e, **i)
+        responses[f'{DEFAULT_PATH}{count}_{j}_search'] = '\n'.join(search)
+        responses[f'{DEFAULT_PATH}{count}_{j}_solution'] = '\n'.join(sol)
         count += 1
     stop = time()
     print(f'\033[92m Indonesian Dot Puzzle solved in {(stop - start) * 1000:.3} ms using {j}.\033[0m')
 
 print('Please wait while saving the puzzle states', end='')
 for k, v in responses.items():
+    info(f"Opening file '{k} to store data'")
     try:
         f = open(k, 'w')
         f.writelines(v)

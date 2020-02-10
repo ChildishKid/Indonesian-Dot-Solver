@@ -21,7 +21,7 @@ class DFSAgent(Agent):
 
                 n_e, sol = e.step(k)
                 n_st = n_e.state
-                if not sol and depth > max_d - 1 or n_st in visited:
+                if not sol and depth >= max_d - 1 or n_st in visited:
                     continue
 
                 if sol or dfs(n_e, depth=depth + 1):
