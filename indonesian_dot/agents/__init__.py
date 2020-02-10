@@ -1,3 +1,3 @@
-from . import dfs
+from .agent import Agent
 
-__all__ = {"dfs"}
+__all__ = {"Agent"}
