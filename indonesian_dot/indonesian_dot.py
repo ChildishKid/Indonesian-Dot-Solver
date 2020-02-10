@@ -1,9 +1,10 @@
+import cProfile
 from os import getcwd
 from os.path import isfile
 from time import time
 
-from agents.config import agent_dict
-from agents.dfs import dfs
+from agents import Agent
+from envs import Env
 
 """
 
@@ -15,7 +16,12 @@ The program is start from the directory of this file, and requires resources fol
 DEFAULT_DIR = getcwd()
 DEFAULT_PATH = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
 DEFAULT_FILE = DEFAULT_PATH + 'test'
-FUNCTION = [dfs]
+FUNCTION = ['dfs']
+ARGS = ['size',
+        'max_d',
+        'max_l',
+        'state'
+        ]
 
 
 # This function is response for printing general error messages
@@ -57,17 +63,13 @@ try:
         l_arr[-1] = l_arr[-1][:-1]
         l_arr[:-1] = [int(e) for e in l_arr[:-1]]
 
-        c = agent_dict()
-        key = list(c.keys())
-
-        assert len(l_arr) == len(key)
+        assert len(l_arr) == len(ARGS)
         assert len(l_arr[-1]) == int(l_arr[0]) ** 2
         assert int(l_arr[-1], 2)
         assert all(int(x) >= 0 for x in l_arr[:-1])
-        assert int(l_arr[-1], 2)
 
-        c.update({key[i]: l_arr[i] for i in range(len(l_arr))})
-        commands.append(c)
+        copy = {ARGS[i]: l_arr[i] for i in range(len(ARGS))}
+        commands.append(copy)
         curr_line += 1
 
 except (ValueError, AssertionError, TypeError):
@@ -85,24 +87,30 @@ It will then run each agent in $FUNCTION against the commands
 The output is stored in '../resources/_<#>_<name($FUNCTION)>_<search|solution>'
 
 """
-
-for j in range(len(FUNCTION)):
+responses = {}
+count = 1
+for j in FUNCTION:
+    agent = Agent.make(j)
     start = time()
-    for i in range(0, len(commands)):
-        func = FUNCTION[j]
-        search, sol = func(**commands[i])
+    for i in commands:
+        e = Env.make('puzzle', **i)
 
-        search = [str(s) + '\n' for s in search]
-        sol = [str(s) + '\n' for s in sol]
-        reg = DEFAULT_PATH + str(i + 1) + '_' + func.__name__ + '_'
-
-        f = open(reg + 'search', 'w')
-        f.writelines(search)
-        f.close()
-
-        f = open(reg + 'solution', 'w')
-        f.writelines(sol)
-        f.close()
+        cProfile.run('agent.run(environment=e, **i)')
+        # sol, search = agent.run(environment=e, **i)
+        # responses[f'{DEFAULT_PATH}{count}_{j}_search'] = '\n'.join(search)
+        # responses[f'{DEFAULT_PATH}{count}_{j}_solution'] = '\n'.join(sol)
+        count += 1
     stop = time()
-    print(
-        f'\033[92m Indonesian Dot Puzzle solved {len(commands)} puzzles in {(stop - start) * 1000:.3} ms using {FUNCTION[j].__name__}. \033[0m')
+    print(f'\033[92m Indonesian Dot Puzzle solved in {(stop - start) * 1000:.3} ms using {j}.\033[0m')
+
+print('Please wait while saving the puzzle states', end='')
+for k, v in responses.items():
+    try:
+        f = open(k, 'w')
+        f.writelines(v)
+        f.close()
+        print('.', end='')
+    except (FileNotFoundError, FileExistsError, IsADirectoryError):
+        print(f"File path '{k}' resulted in an error and was ignored.")
+
+print('Done')

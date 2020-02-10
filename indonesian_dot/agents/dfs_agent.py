@@ -7,16 +7,16 @@ class DFSAgent(Agent):
         environment = kwargs['environment']
 
         if environment.solved():
-            return [], []
+            return [f'0 {environment.state}'], [f'0 0 0 {environment.state}']
 
         solution = []
         search = []
         visited = []
 
         def dfs(e, depth=0):
-            st, act = e.sample()
-            search.append(f'{self.f(st)} {self.g(st)} {self.h(st)} {st}')
-            visited.append(st)
+            s, act = e.sample()
+            search.append(f'{self.f(s)} {self.g(s)} {self.h(s)} {s}')
+            visited.append(s)
             for k in act:
 
                 n_e, sol = e.step(k)

@@ -16,7 +16,8 @@ class Puzzle(Env):
     def step(self, action):
         new_state = self._actions[action]
         i_st = int(new_state, 2)
-        act = [(k, f"{i_st ^ Puzzle._action_space[k]:{f'0{len(new_state)}b'}}")
+        form = f'0{len(new_state)}b'
+        act = [(k, f"{i_st ^ Puzzle._action_space[k]:{form}}")
                for k, v in self._actions.items()]
 
         act.sort(key=lambda x: x[1])

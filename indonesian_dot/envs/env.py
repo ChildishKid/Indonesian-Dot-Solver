@@ -8,10 +8,10 @@ class Env:
         return self._state
 
     @property
-    def actions(self):
+    def actions(self) -> list:
         return list(self._actions.keys())
 
-    def solved(self):
+    def solved(self) -> bool:
         raise NotImplementedError
 
     def sample(self):
