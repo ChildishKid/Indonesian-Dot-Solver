@@ -43,7 +43,6 @@ class Env:
             act.sort(key=lambda x: x[1])
             act = dict(act)
             from envs.puzzle import Puzzle
-            Puzzle._action_space = actions
-            return Puzzle(act, state)
+            return Puzzle(act, state, actions)
 
         return None
