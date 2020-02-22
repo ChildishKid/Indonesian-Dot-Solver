@@ -22,5 +22,7 @@ class Agent:
         if k == 'dfs':
             from .dfs_agent import DFSAgent
             v = DFSAgent()
-
+        elif k == 'bfs':
+            from .bfs_agent import BFSAgent
+            v = BFSAgent()
         return v

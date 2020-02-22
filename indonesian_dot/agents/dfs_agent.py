@@ -15,6 +15,7 @@ class DFSAgent(Agent):
 
         def dfs(e, depth=0):
             s, act = e.sample()
+            print(act)
             search.append(f'{self.f(s)} {self.g(s)} {self.h(s)} {s}')
             visited.append(s)
             for k in act:

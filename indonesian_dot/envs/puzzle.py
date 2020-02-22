@@ -19,7 +19,6 @@ class Puzzle(Env):
         form = f'0{len(new_state)}b'
         act = [(k, f"{i_st ^ Puzzle._action_space[k]:{form}}")
                for k, v in self._actions.items()]
-
         act.sort(key=lambda x: x[1])
         act = dict(act)
         del act[action]

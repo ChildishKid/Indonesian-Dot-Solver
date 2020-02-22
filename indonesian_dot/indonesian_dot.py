@@ -14,10 +14,12 @@ The main entry of the program.
 The program is start from the directory of this file, and requires resources folder to be one level higher.
 
 """
+
 DEFAULT_DIR = getcwd()
-DEFAULT_PATH = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
+# DEFAULT_PATH = DEFAULT_DIR[:DEFAULT_DIR.rfind("/")] + "/resources/"
+DEFAULT_PATH = DEFAULT_DIR + '\\resources\\'
 DEFAULT_FILE = DEFAULT_PATH + 'test'
-FUNCTION = ['dfs']
+FUNCTION = ['bfs']
 ARGS = ['size',
         'max_d',
         'max_l',
