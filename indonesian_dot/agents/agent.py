@@ -1,15 +1,15 @@
 class Agent:
 
-    def run(self, **kwargs) -> (list, list):
+    def run(self, **kwargs) -> (str, str):
         raise NotImplementedError
 
-    def f(self, n) -> float:
+    def f(self, n) -> int:
         raise NotImplementedError
 
-    def g(self, n) -> float:
+    def g(self, n) -> int:
         raise NotImplementedError
 
-    def h(self, n) -> float:
+    def h(self, n) -> int:
         raise NotImplementedError
 
     def __str__(self) -> str:
@@ -22,5 +22,7 @@ class Agent:
         if k == 'dfs':
             from .dfs_agent import DFSAgent
             v = DFSAgent()
-
+        elif k == 'bfs':
+            from .bfs_agent import BFSAgent
+            v = BFSAgent()
         return v
