@@ -1,6 +1,7 @@
 import unittest
 
 import agents
+from spaces import Node
 
 
 class MyTestCase(unittest.TestCase):
@@ -15,6 +16,11 @@ class MyTestCase(unittest.TestCase):
     def test_a_star(self):
         a_star = agents.make('a*')
         assert str(a_star) == 'a*'
+
+    def test_bfs_heuristic(self):
+        bfs = agents.make('bfs')
+        n = Node('100001111')
+        print(bfs.h(n))
 
 if __name__ == '__main__':
     unittest.main()

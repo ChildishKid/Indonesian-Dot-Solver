@@ -71,6 +71,10 @@ class Puzzle:
         self._max_depth = self.puzzle_size
 
     @property
+    def id(self):
+        return self._puzzle_id
+
+    @property
     def puzzle_size(self):
         return len(self._root_state)
 

@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 from logging import info, getLogger, INFO
 from os import getcwd
 from os.path import isfile
+from threading import Thread
 from time import time
 
 import agents
@@ -15,9 +16,9 @@ The program is start from the directory of this file, and requires resources fol
 
 """
 DEFAULT_DIR = getcwd()
-DEFAULT_PATH = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
-DEFAULT_FILE = DEFAULT_PATH + 'test'
-FUNCTION = ['dfs']
+RESOURCES = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
+DEFAULT_FILE = RESOURCES + 'test'
+AGENTS = ['bfs']
 ARGS = ['size',
         'max_d',
         'max_l',
@@ -32,7 +33,7 @@ if args.verbose:
     getLogger().setLevel(INFO)
 
 
-# This function is response for printing general error messages
+# This function is responsible for printing general error messages
 def internal_error(msg):
     print(f'\033[91m {msg} \033[0m')
     exit(-1)
@@ -98,34 +99,44 @@ The output is stored in '../resources/_<#>_<name($FUNCTION)>_<search|solution>'
 """
 
 responses = {}
-count = 1
-for i in commands:
-    puzzle = Puzzle(i['state'])
-    puzzle.max_length = i['max_l']
-    puzzle.max_depth = i['max_d']
 
-    for j in FUNCTION:
-        agent = agents.make(j)
-        info(f'Agent {j} is running configuration {i}')
+puzzles = []
+for command in commands:
+    puzzle = Puzzle(command['state'])
+    puzzle.max_depth = command['max_d']
+    puzzle.max_length = command['max_l']
+    puzzles.append(puzzle)
 
+
+def run(agent):
+    for puzzle in puzzles:
         start = time()
         solution, search = puzzle.traverse(agent)
         stop = time()
+        print(
+            f'\033[92m Indonesian Dot Puzzle #{puzzle.id} solved in {(stop - start) * 1000:.3} ms using {agent}.\033[0m')
+        saving_file_path = f'{RESOURCES}{puzzle.id}_{agent}_'
 
-        responses[f'{DEFAULT_PATH}{count}_{j}_search'] = search
-        responses[f'{DEFAULT_PATH}{count}_{j}_solution'] = solution
-        print(f'\033[92m Indonesian Dot Puzzle #{count} solved in {(stop - start) * 1000:.3} ms using {j}.\033[0m')
-        count += 1
+        try:
+            info(f"Saving Puzzle #{puzzle.id}\'s {agent} search data")
+            f = open(saving_file_path + 'search', 'w')
+            f.writelines(search)
+            f.close()
 
-print('Please wait while saving the puzzle states', end='')
-for k, v in responses.items():
-    info(f"Opening file '{k} to store data'")
-    try:
-        f = open(k, 'w')
-        f.writelines(v)
-        f.close()
-        print('.', end='')
-    except (FileNotFoundError, FileExistsError, IsADirectoryError):
-        print(f"File path '{k}' resulted in an error and was ignored.")
+            info(f"Saving Puzzle #{puzzle.id}\'s {agent} solution data")
+            f = open(saving_file_path + 'solution', 'w')
+            f.writelines(solution)
+            f.close()
+        except (FileNotFoundError, FileExistsError, IsADirectoryError):
+            print(f"File path resulted in an error and was ignored.")
 
+
+agents = [agents.make(x) for x in AGENTS]
+threads = [Thread(target=run, args=(x,)) for x in agents]
+
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
 print('Done')

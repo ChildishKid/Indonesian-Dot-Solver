@@ -4,7 +4,7 @@ from . import Agent
 class AStarAgent(Agent):
 
     def g(self, n) -> int:
-        return n.state.count('1')
+        return n.depth
 
     def h(self, n) -> int:
         return n.state.count('1')
