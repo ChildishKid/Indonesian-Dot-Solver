@@ -143,8 +143,8 @@ class Puzzle:
         step = self.step
         goal = self.goal_state
 
-        root.g = agent.g(root.state)
-        root.h = agent.h(root.state)
+        root.g = agent.g(root)
+        root.h = agent.h(root)
 
         solution = None
         visited = []
@@ -169,8 +169,8 @@ class Puzzle:
 
                     if child not in search and child not in visited:
                         info(f'puzzle #{self._puzzle_id} discovered new node {str(child)} from {str(current_node)}')
-                        child.g = agent.g(child.state)
-                        child.h = agent.h(child.state)
+                        child.g = agent.g(child)
+                        child.h = agent.h(child)
                         search.append(child)
 
                         if goal in child:
