@@ -4,8 +4,8 @@ from os import getcwd
 from os.path import isfile
 from time import time
 
-from agents import Agent
-from envs import Env
+import agents
+from envs import Puzzle
 
 """
 
@@ -99,18 +99,23 @@ The output is stored in '../resources/_<#>_<name($FUNCTION)>_<search|solution>'
 
 responses = {}
 count = 1
-for j in FUNCTION:
-    agent = Agent.make(j)
-    start = time()
-    for i in commands:
+for i in commands:
+    puzzle = Puzzle(i['state'])
+    puzzle.max_length = i['max_l']
+    puzzle.max_depth = i['max_d']
+
+    for j in FUNCTION:
+        agent = agents.make(j)
         info(f'Agent {j} is running configuration {i}')
-        e = Env.make('puzzle', **i)
-        sol, search = agent.run(environment=e, **i)
-        responses[f'{DEFAULT_PATH}{count}_{j}_search'] = '\n'.join(search)
-        responses[f'{DEFAULT_PATH}{count}_{j}_solution'] = '\n'.join(sol)
+
+        start = time()
+        solution, search = puzzle.traverse(agent)
+        stop = time()
+
+        responses[f'{DEFAULT_PATH}{count}_{j}_search'] = search
+        responses[f'{DEFAULT_PATH}{count}_{j}_solution'] = solution
+        print(f'\033[92m Indonesian Dot Puzzle #{count} solved in {(stop - start) * 1000:.3} ms using {j}.\033[0m')
         count += 1
-    stop = time()
-    print(f'\033[92m Indonesian Dot Puzzle solved in {(stop - start) * 1000:.3} ms using {j}.\033[0m')
 
 print('Please wait while saving the puzzle states', end='')
 for k, v in responses.items():
