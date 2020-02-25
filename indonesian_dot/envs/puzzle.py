@@ -1,6 +1,6 @@
 from logging import info
-from threading import Lock
 from math import sqrt
+from threading import Lock
 
 from spaces import Node
 
@@ -161,7 +161,7 @@ class Puzzle:
 
             if current_node.depth + 1 < max_depth:
                 start = current_node.previous_action + 1
-                threshold = min(size, max_length + start + 1)
+                threshold = min(size, max_length + start)
 
                 for i in range(start, threshold, 1):
                     child = step(current_node, i)
