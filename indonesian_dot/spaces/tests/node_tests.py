@@ -38,6 +38,9 @@ class MyTestCase(unittest.TestCase):
 
         assert -1 == second.__cmp__(first)
 
-
+    def test_to_str(self):
+        first = Node('010111010')
+        ss = str(first)
+        print(ss)
 if __name__ == '__main__':
     unittest.main()
