@@ -86,6 +86,18 @@ class Node:
         self.depth = 0
 
     @property
+    def length(self):
+        return int(sqrt(len(self._state)))
+
+    @property
+    def width(self):
+        return int(sqrt(len(self._state)))
+
+    @property
+    def size(self):
+        return len(self._state)
+
+    @property
     def depth(self):
         return self._depth
 
@@ -177,6 +189,32 @@ class Node:
     def __iter__(self):
         for x in self._state:
             yield int(x)
+
+    def touch(self, action):
+        if not (0 <= action < self.size):
+            raise ValueError
+        new_state = list(self)
+        length = self.length
+
+        action_row, action_column = divmod(action, length)
+
+        if action_column - 1 >= 0:
+            new_state[action - 1] = (new_state[action - 1] + 1) % 2
+
+        if action_column + 1 < length:
+            new_state[action + 1] = (new_state[action + 1] + 1) % 2
+
+        if action_row - 1 >= 0:
+            new_state[action - length] = (new_state[action - length] + 1) % 2
+
+        if action_row + 1 < length:
+            new_state[action + length] = (new_state[action + length] + 1) % 2
+
+        new_state[action] = (new_state[action] + 1) % 2
+        new_state = [str(x) for x in new_state]
+        new_state = ''.join(new_state)
+
+        return Node(new_state, self, action)
 
     def search_artifact(self):
         return f'{self.f} {self._g} {self._h} {self._state}'

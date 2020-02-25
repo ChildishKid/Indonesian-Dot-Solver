@@ -1,5 +1,3 @@
-from math import sqrt
-
 from . import Agent
 
 
@@ -10,8 +8,7 @@ class BFSAgent(Agent):
 
     def h(self, n) -> int:
         lst = list(n)
-        size = len(n)
-        length = int(sqrt(size))
+        length = n.length
         count = 0
         while 1 in lst:
             start = lst.index(1)

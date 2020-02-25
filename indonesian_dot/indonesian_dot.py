@@ -1,8 +1,8 @@
 from argparse import ArgumentParser
 from logging import info, getLogger, INFO
+from multiprocessing.pool import Pool
 from os import getcwd
 from os.path import isfile
-from threading import Thread
 from time import time
 
 import agents
@@ -18,7 +18,7 @@ The program is start from the directory of this file, and requires resources fol
 DEFAULT_DIR = getcwd()
 RESOURCES = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
 DEFAULT_FILE = RESOURCES + 'test'
-AGENTS = ['bfs']
+AGENTS = ['bfs', 'dfs', 'a*']
 ARGS = ['size',
         'max_d',
         'max_l',
@@ -132,11 +132,13 @@ def run(agent):
 
 
 agents = [agents.make(x) for x in AGENTS]
-threads = [Thread(target=run, args=(x,)) for x in agents]
-
+p = Pool(len(agents))
+p.map(run, agents)
+# threads = [Thread(target=run, args=(x,)) for x in agents]
+"""
 for thread in threads:
     thread.start()
 
 for thread in threads:
-    thread.join()
+    thread.join()"""
 print('Done')

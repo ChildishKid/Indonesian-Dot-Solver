@@ -1,5 +1,4 @@
 from logging import info
-from math import sqrt
 from threading import Lock
 
 from spaces import Node
@@ -67,20 +66,12 @@ class Puzzle:
         Puzzle.__lock.release()
 
         self._root_state = Node(root_state)
-        self._max_length = self.puzzle_size
-        self._max_depth = self.puzzle_size
+        self._max_length = self._root_state.size
+        self._max_depth = self._root_state.size
 
     @property
     def id(self):
         return self._puzzle_id
-
-    @property
-    def puzzle_size(self):
-        return len(self._root_state)
-
-    @property
-    def puzzle_length(self):
-        return int(sqrt(len(self._root_state)))
 
     @property
     def root_state(self):
@@ -89,7 +80,7 @@ class Puzzle:
     @root_state.setter
     def root_state(self, new_root_state):
         info(f'Root state for puzzle #{self._puzzle_id} has been set to {new_root_state}')
-        self._root_state = new_root_state
+        self._root_state = Node(new_root_state)
 
     @property
     def max_depth(self):
@@ -97,7 +88,7 @@ class Puzzle:
 
     @max_depth.setter
     def max_depth(self, new_max_depth):
-        appropriate_depth = min(new_max_depth, self.puzzle_size)
+        appropriate_depth = min(new_max_depth, self._root_state.size)
         info(f'Maximum depth for puzzle #{self._puzzle_id} has been set to appropriate depth of {appropriate_depth}')
         self._max_depth = appropriate_depth
 
@@ -107,44 +98,19 @@ class Puzzle:
 
     @max_length.setter
     def max_length(self, new_max_length):
-        appropriate_length = min(new_max_length, self.puzzle_size)
+        appropriate_length = min(new_max_length, self._root_state.size)
         info(f'Maximum length for puzzle #{self._puzzle_id} has been set to appropriate length of {appropriate_length}')
         self._max_length = appropriate_length
 
     @property
     def goal_state(self):
-        return '0' * self.puzzle_size
-
-    def step(self, node: Node, action):
-        new_state = list(node)
-        length = self.puzzle_length
-
-        action_row, action_column = divmod(action, length)
-
-        if action_column - 1 >= 0:
-            new_state[action - 1] = (new_state[action - 1] + 1) % 2
-
-        if action_column + 1 < length:
-            new_state[action + 1] = (new_state[action + 1] + 1) % 2
-
-        if action_row - 1 >= 0:
-            new_state[action - length] = (new_state[action - length] + 1) % 2
-
-        if action_row + 1 < length:
-            new_state[action + length] = (new_state[action + length] + 1) % 2
-
-        new_state[action] = (new_state[action] + 1) % 2
-        new_state = [str(x) for x in new_state]
-        new_state = ''.join(new_state)
-
-        return Node(new_state, node, action)
+        return '0' * self._root_state.size
 
     def traverse(self, agent):
         root = self._root_state
-        size = self.puzzle_size
+        size = self._root_state.size
         max_depth = self._max_depth if str(agent) == 'dfs' else size
         max_length = self._max_length if not str(agent) == 'dfs' else size
-        step = self.step
         goal = self.goal_state
 
         root.g = agent.g(root)
@@ -168,7 +134,7 @@ class Puzzle:
                 threshold = min(size, max_length + start)
 
                 for i in range(start, threshold, 1):
-                    child = step(current_node, i)
+                    child = current_node.touch(i)
                     child.depth = current_node.depth + 1
 
                     if child not in search and child not in visited:
