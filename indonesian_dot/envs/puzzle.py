@@ -10,9 +10,6 @@ Creates an environment for agents to play the game of Indonesian Dot.
 Parameters
 ----------
 
-lock : threading.Lock
-    A lock used for acquiring exclusive access to the static puzzle id variable.
-
 puzzle_id : int
     The puzzle id of this puzzle.
     
@@ -25,14 +22,6 @@ max_length : int
 max_depth : int
     The maximum depth that each node is allowed (number of children from the first predecessor).
     
-puzzle_size : int
-    The size of this puzzle.
-    Equivalent to the length of the root's state.
-
-puzzle_length : int
-    The dimension of this puzzle.
-    Equivalent to length and width of a n x n square.
-
 goal_state : str
     The goal to achieve for this puzzle to be complete.
 

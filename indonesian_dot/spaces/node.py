@@ -30,6 +30,16 @@ depth : int
     The depth of this node. 
     This parameter is not enforced.
     Note: predecessor's depth + 1 = this node's depth
+
+length : int
+    returns the length of this node.
+    Note: this is not the size of the node.
+
+width : int
+    returns the same result as length since this node contains the same length and width.
+
+size : int
+    returns the total size of this node as length * width, or simply len(state).
     
 -------
 Methods
@@ -64,13 +74,18 @@ __contains__(item) -> {None, True, False}
 
 __len__() -> int
     return the length of the state this node is wrapped around.
+    Note: the length is defined as the length of a square, and not the size of the square.
+    
+touch(action) -> Node
+    touches the adjacent tokens of this node based on action, and returns a new node pointing to this node.
+    This node effectively becomes a predecessor.
     
 search_artifact() -> str
-    return the string representation of a search artifact.
+    return the string representation of a search artifact: f, g, h and this state.
     Example: 0 0 0 010111010
 
 solution_artifact() -> str
-    return the string representation of a solution artifact.
+    return the string representation of a solution artifact: action taken to get to this state.
     Example: B2 000000000
     
 """
