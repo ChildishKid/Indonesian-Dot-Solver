@@ -229,5 +229,4 @@ class Node:
         else:
             row, column = divmod(self._previous_action, self.length)
             row = chr(row + ord('A'))
-            column += 1
-            return f'{row}{column} {self._state}'
+            return f'{row}{column + 1} {self._state}'
