@@ -227,8 +227,7 @@ class Node:
         if self._previous_action is None:
             return f'0 {self._state}'
         else:
-            length = self.length
-            row, column = divmod(self._previous_action, length)
+            row, column = divmod(self._previous_action, self.length)
             row = chr(row + ord('A'))
             column += 1
             return f'{row}{column} {self._state}'
