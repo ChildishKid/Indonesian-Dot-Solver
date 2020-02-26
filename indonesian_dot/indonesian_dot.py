@@ -62,17 +62,18 @@ def run(agent):
         saving_file_path = f'{RESOURCES}{puzzle.id}_{agent}_'
 
         try:
-            info(f"Saving Puzzle #{puzzle.id}\'s {agent} search data")
-            file = open(saving_file_path + 'search', 'w')
-            file.writelines(search)
-            file.close()
+            with open(saving_file_path + 'search', 'w') as file:
+                info(f"Saving Puzzle #{puzzle.id}\'s {agent} search data")
+                file.writelines(search)
+                file.close()
 
-            info(f"Saving Puzzle #{puzzle.id}\'s {agent} solution data")
-            file = open(saving_file_path + 'solution', 'w')
-            file.writelines(solution)
-            file.close()
+                info(f"Saving Puzzle #{puzzle.id}\'s {agent} solution data")
+                file = open(saving_file_path + 'solution', 'w')
+                file.writelines(solution)
+                file.close()
         except (FileNotFoundError, FileExistsError, IsADirectoryError):
             print(f"File path resulted in an error and was ignored.")
+
     print(f'\033[92m Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.\033[0m')
 
 parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
