@@ -42,16 +42,16 @@ __str__() -> str
     return the state of the node.
     
 __le__(other) -> {None, True, False}
-    return True iff the function and the state of this object are less than or equal to the other object's.
+    return True iff the function and the state of this object is less than or equal to the other object's.
     
 __lt__(other) -> {None, True, False}
-    return True iff the function and the state of this object are less than the other object's.
+    return True iff the function and the state of this object is less than the other object's.
 
 __ge__(other) -> {None, True, False}
-     return True iff the function and the state of this object are greater than or equal to the other object's.
+     return True iff the function and the state of this object is greater than or equal to the other object's.
      
 __gt__(other) -> {None, True, False}
-    return True iff the function and the state of this object are greater than the other object's.
+    return True iff the function and the state of this object is greater than the other object's.
     
 __cmp__(other) -> {None, -1, 0, 1}
     returns -1 if the function and the state of this object is less than the other.
