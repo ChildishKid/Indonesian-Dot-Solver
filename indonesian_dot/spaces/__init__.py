@@ -1,3 +1,3 @@
-from .space import sample
+from .node import Node
 
-__all__ = {"sample"}
+__all__ = {'Node'}
