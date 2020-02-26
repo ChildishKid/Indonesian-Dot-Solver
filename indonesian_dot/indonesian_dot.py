@@ -4,7 +4,6 @@ from multiprocessing.pool import Pool
 from os import getcwd
 from os.path import isfile
 from time import time
-import cProfile
 import agents
 from envs import Puzzle
 
@@ -92,13 +91,10 @@ if not isfile(DEFAULT_FILE):
 puzzles = []
 convert_puzzle()
 agents = [agents.make(x) for x in ['dfs', 'bfs', 'astar']]
-cProfile.run("""
-for i in puzzles:
-    for j in agents: 
-        i.traverse(j)
-""")
-"""process_pool = Pool(len(agents))
-process_pool.map(profile, agents)
+
+process_pool = Pool(len(agents))
+process_pool.map(run, agents)
 process_pool.close()
-process_pool.join()"""
+process_pool.join()
 print('Done')
+

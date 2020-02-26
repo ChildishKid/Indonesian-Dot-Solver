@@ -198,26 +198,25 @@ class Node:
         return hash(self._state)
 
     def touch(self, action):
-        new_state = [int(x) for x in self._state]
+
+        size = len(self._state) - 1
         length = self.length
+        integer_action = 2 ** (size - action)
 
-        action_row, action_column = divmod(action, length)
+        if action - length >= 0:
+            integer_action += 2 ** (size - (action - length))
 
-        if action_column - 1 >= 0:
-            new_state[action - 1] = (new_state[action - 1] + 1) % 2
+        if action + length <= size:
+            integer_action += 2 ** (size - (action + length))
 
-        if action_column + 1 < length:
-            new_state[action + 1] = (new_state[action + 1] + 1) % 2
+        if action % length > 0:
+            integer_action += 2 ** (size - (action - 1))
 
-        if action_row - 1 >= 0:
-            new_state[action - length] = (new_state[action - length] + 1) % 2
+        if action % length < length - 1:
+            integer_action += 2 ** (size - (action + 1))
 
-        if action_row + 1 < length:
-            new_state[action + length] = (new_state[action + length] + 1) % 2
-
-        new_state[action] = (new_state[action] + 1) % 2
-        new_state = [str(x) for x in new_state]
-        new_state = ''.join(new_state)
+        new_state = int(self._state, 2) ^ integer_action
+        new_state = f'{new_state:0{len(self._state)}b}'
 
         return Node(new_state, self, action)
 
