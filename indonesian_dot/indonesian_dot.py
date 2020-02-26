@@ -4,108 +4,52 @@ from multiprocessing.pool import Pool
 from os import getcwd
 from os.path import isfile
 from time import time
-
+import cProfile
 import agents
 from envs import Puzzle
 
-"""
-
-The main entry of the program.
-
-The program is start from the directory of this file, and requires resources folder to be one level higher.
-
-"""
 DEFAULT_DIR = getcwd()
 RESOURCES = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
 DEFAULT_FILE = RESOURCES + 'test'
-AGENTS = ['dfs', 'bfs', 'a*']
-ARGS = ['size',
-        'max_d',
-        'max_l',
-        'state'
-        ]
-
-parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
-parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
-args = parser.parse_args()
-
-if args.verbose:
-    getLogger().setLevel(INFO)
 
 
-# This function is responsible for printing general error messages
 def internal_error(msg):
     print(f'\033[91m {msg} \033[0m')
     exit(-1)
 
 
-if 'indonesian_dot' not in DEFAULT_DIR:
-    internal_error('indonesian_dot.py must be run inside of "indonesian_dot" folder.')
+def convert_puzzle():
+    lines = open(DEFAULT_FILE).readlines()
+    curr_line = 1
 
-if not isfile(DEFAULT_FILE):
-    internal_error(f'File {DEFAULT_FILE} not found.')
+    info(f"Reading the contents of '{DEFAULT_FILE}'")
+    try:
+        for line in lines:
+            if line == '\n':
+                continue
 
-"""
+            l_arr = line.split(' ')
+            l_arr[-1] = l_arr[-1][:-1]
+            l_arr[:-1] = [int(e) for e in l_arr[:-1]]
 
-Start parsing the file and store it into commands.
+            assert len(l_arr) == 4
+            assert len(l_arr[-1]) == int(l_arr[0]) ** 2
+            assert int(l_arr[-1], 2)
+            assert all(int(x) >= 0 for x in l_arr[:-1])
 
-All the lines of '../resources/test' are read, then stored into $lines. 
+            max_d = l_arr[1]
+            max_l = l_arr[2]
+            state = l_arr[3]
 
-Each line must have it's size attribute be equivalent to the length of the state attribute
+            puzzle = Puzzle(state)
+            puzzle.max_depth = max_d
+            puzzle.max_length = max_l
+            puzzles.append(puzzle)
 
-Each line must have the first three attributes represented as an integer and must be greater than or equal to 0
+            curr_line += 1
 
-Each line must have it's last attribute represented as a string with only 0s and 1s
-
-
-"""
-commands = []
-lines = open(DEFAULT_FILE).readlines()
-curr_line = 1
-
-info(f"Reading the contents of '{DEFAULT_FILE}'")
-try:
-    for line in lines:
-        if line == '\n':
-            continue
-
-        l_arr = line.split(' ')
-        l_arr[-1] = l_arr[-1][:-1]
-        l_arr[:-1] = [int(e) for e in l_arr[:-1]]
-
-        assert len(l_arr) == len(ARGS)
-        assert len(l_arr[-1]) == int(l_arr[0]) ** 2
-        assert int(l_arr[-1], 2)
-        assert all(int(x) >= 0 for x in l_arr[:-1])
-
-        copy = {ARGS[i]: l_arr[i] for i in range(len(ARGS))}
-        commands.append(copy)
-        curr_line += 1
-
-except (ValueError, AssertionError, TypeError):
-    internal_error(f'Line #{curr_line} does not have appropriate attributes.')
-
-del lines
-del curr_line
-
-"""
-
-The program has determined all commands are proper.
-
-It will then run each agent in $FUNCTION against the commands
-
-The output is stored in '../resources/_<#>_<name($FUNCTION)>_<search|solution>'
-
-"""
-
-responses = {}
-
-puzzles = []
-for command in commands:
-    puzzle = Puzzle(command['state'])
-    puzzle.max_depth = command['max_d']
-    puzzle.max_length = command['max_l']
-    puzzles.append(puzzle)
+    except (ValueError, AssertionError, TypeError):
+        internal_error(f'Line #{curr_line} does not have appropriate attributes.')
 
 
 def run(agent):
@@ -132,9 +76,29 @@ def run(agent):
             print(f"File path resulted in an error and was ignored.")
     print(f'\033[92m Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.\033[0m')
 
+parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
+parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
+args = parser.parse_args()
 
-agents = [agents.make(x) for x in AGENTS]
-p = Pool(len(agents))
-p.map(run, agents)
-p.close()
+if args.verbose:
+    getLogger().setLevel(INFO)
+
+if 'indonesian_dot' not in DEFAULT_DIR:
+    internal_error('indonesian_dot.py must be run inside of "indonesian_dot" folder.')
+
+if not isfile(DEFAULT_FILE):
+    internal_error(f'File {DEFAULT_FILE} not found.')
+
+puzzles = []
+convert_puzzle()
+agents = [agents.make(x) for x in ['dfs', 'bfs', 'astar']]
+cProfile.run("""
+for i in puzzles:
+    for j in agents: 
+        i.traverse(j)
+""")
+"""process_pool = Pool(len(agents))
+process_pool.map(profile, agents)
+process_pool.close()
+process_pool.join()"""
 print('Done')

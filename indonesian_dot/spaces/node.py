@@ -85,13 +85,20 @@ class Node:
         self.h = 0
         self._depth = 0 if not predecessor else predecessor.depth + 1
 
+        self._f = None
+        self._length = None
+
     @property
     def length(self):
-        return int(sqrt(len(self._state)))
+        if not self._length:
+            self._length = int(sqrt(len(self._state)))
+        return self._length
 
     @property
     def width(self):
-        return self.length
+        if not self._length:
+            self._length = int(sqrt(len(self._state)))
+        return self._length
 
     @property
     def size(self):
@@ -103,7 +110,9 @@ class Node:
 
     @property
     def f(self):
-        return self._g + self._h
+        if self._f is None:
+            self._f = self._g + self._h
+        return self._f
 
     @property
     def g(self):
@@ -116,10 +125,12 @@ class Node:
     @g.setter
     def g(self, new_g):
         self._g = new_g
+        self._f = None
 
     @h.setter
     def h(self, new_h):
         self._h = new_h
+        self._f = None
 
     @property
     def predecessor(self):
@@ -137,27 +148,24 @@ class Node:
         return self._state
 
     def __eq__(self, other):
-        if isinstance(other, Node):
-            return self.f == other.f and self._state == other._state
+        return self.f == other.f and self._state == other._state
 
     def __str__(self):
         return self._state
 
     def __le__(self, other):
-        if isinstance(other, Node):
-            return self.f <= other.f and self._state <= other._state
+        return self.f <= other.f and self._state <= other._state
 
     def __lt__(self, other):
-        if isinstance(other, Node):
-            return self.f < other.f or (self.f == self.f and self._state < other._state)
+        result = other.f - self.f
+        return result > 0 or (result == 0 and self._state < other._state)
 
     def __ge__(self, other):
-        if isinstance(other, Node):
-            return self.f >= other.f and self._state >= other._state
+        return self.f >= other.f and self._state >= other._state
 
     def __gt__(self, other):
-        if isinstance(other, Node):
-            return self.f > other.f or (self.f == self.f and self._state > other._state)
+        result = other.f - self.f
+        return result < 0 or (result == 0 and self._state > other._state)
 
     def __cmp__(self, other):
         if isinstance(other, Node):
@@ -190,9 +198,7 @@ class Node:
         return hash(self._state)
 
     def touch(self, action):
-        if not (0 <= action < self.size):
-            raise ValueError
-        new_state = list(self)
+        new_state = [int(x) for x in self._state]
         length = self.length
 
         action_row, action_column = divmod(action, length)

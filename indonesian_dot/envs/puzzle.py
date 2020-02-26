@@ -1,6 +1,5 @@
 from heapq import heappush, heappop
 from logging import info
-from threading import Lock
 
 from spaces import Node
 
@@ -57,7 +56,6 @@ reset() -> None
 
 
 class Puzzle:
-    __lock = Lock()
     __puzzle_id = 1
 
     def __init__(self, root_state):
@@ -133,9 +131,8 @@ class Puzzle:
             if current_node.depth + 1 < max_depth:
                 start = current_node.previous_action + 1
 
-                for i in range(start, current_node.size, 1):
+                for i in range(start, size, 1):
                     child = current_node.touch(i)
-
                     if child not in seen:
                         info(f'puzzle #{self._puzzle_id} discovered new node {str(child)} from {str(current_node)}')
                         child.g = agent.g(child)

@@ -11,5 +11,5 @@ def make(agent_type):
         return DFSAgent()
     elif agent_type == 'bfs':
         return BFSAgent()
-    elif agent_type == 'a*':
+    elif agent_type == 'astar':
         return AStarAgent()
