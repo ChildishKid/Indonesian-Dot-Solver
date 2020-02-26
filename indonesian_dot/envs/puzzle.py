@@ -1,3 +1,4 @@
+from heapq import heappush, heappop
 from logging import info
 from threading import Lock
 
@@ -60,10 +61,8 @@ class Puzzle:
     __puzzle_id = 1
 
     def __init__(self, root_state):
-        Puzzle.__lock.acquire(True)
         self._puzzle_id = Puzzle.__puzzle_id
         Puzzle.__puzzle_id += 1
-        Puzzle.__lock.release()
 
         self._root_state = Node(root_state)
         self._max_length = self._root_state.size
@@ -88,9 +87,8 @@ class Puzzle:
 
     @max_depth.setter
     def max_depth(self, new_max_depth):
-        appropriate_depth = min(new_max_depth, self._root_state.size)
-        info(f'Maximum depth for puzzle #{self._puzzle_id} has been set to appropriate depth of {appropriate_depth}')
-        self._max_depth = appropriate_depth
+        info(f'Maximum depth for puzzle #{self._puzzle_id} has been set to {new_max_depth}')
+        self._max_depth = new_max_depth
 
     @property
     def max_length(self):
@@ -98,9 +96,8 @@ class Puzzle:
 
     @max_length.setter
     def max_length(self, new_max_length):
-        appropriate_length = min(new_max_length, self._root_state.size)
-        info(f'Maximum length for puzzle #{self._puzzle_id} has been set to appropriate length of {appropriate_length}')
-        self._max_length = appropriate_length
+        info(f'Maximum length for puzzle #{self._puzzle_id} has been set to appropriate length of {new_max_length}')
+        self._max_length = new_max_length
 
     @property
     def goal_state(self):
@@ -109,48 +106,49 @@ class Puzzle:
     def traverse(self, agent):
         root = self._root_state
         size = self._root_state.size
-        max_depth = self._max_depth if str(agent) == 'dfs' else size
-        max_length = self._max_length if not str(agent) == 'dfs' else size
+        max_depth = self._max_depth if str(agent) == 'dfs' else 2 ** self._root_state.size
+        max_length = self._max_length if not str(agent) == 'dfs' else 2 ** self._root_state.size
         goal = self.goal_state
 
         root.g = agent.g(root)
         root.h = agent.h(root)
 
-        solution = None
         visited = []
-        search = [root]
-        found = False
+        unvisited = []
+        seen = set()
+
+        solution = None
 
         if goal in root:
             solution = root
-            found = True
+        else:
+            unvisited.append(root)
 
-        while not found and search:
-            current_node = search.pop(0)
+        while unvisited and max_length > 0:
+            max_length -= 1
+            current_node = heappop(unvisited)
+            seen.add(current_node)
             visited.append(current_node)
 
             if current_node.depth + 1 < max_depth:
                 start = current_node.previous_action + 1
-                threshold = min(size, max_length + start)
 
-                for i in range(start, threshold, 1):
+                for i in range(start, current_node.size, 1):
                     child = current_node.touch(i)
-                    child.depth = current_node.depth + 1
 
-                    if child not in search and child not in visited:
+                    if child not in seen:
                         info(f'puzzle #{self._puzzle_id} discovered new node {str(child)} from {str(current_node)}')
                         child.g = agent.g(child)
                         child.h = agent.h(child)
-                        search.append(child)
+                        heappush(unvisited, child)
+                        seen.add(child)
 
                         if goal in child:
                             info(f'puzzle #{self._puzzle_id} found the goal state')
                             visited.append(child)
                             solution = child
-                            found = True
+                            unvisited.clear()
                             break
-
-                search.sort()
 
         if not solution:
             solution = 'no solution'

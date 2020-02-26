@@ -18,7 +18,7 @@ The program is start from the directory of this file, and requires resources fol
 DEFAULT_DIR = getcwd()
 RESOURCES = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
 DEFAULT_FILE = RESOURCES + 'test'
-AGENTS = ['bfs', 'dfs', 'a*']
+AGENTS = ['dfs', 'bfs', 'a*']
 ARGS = ['size',
         'max_d',
         'max_l',
@@ -109,12 +109,13 @@ for command in commands:
 
 
 def run(agent):
+    total = []
     for puzzle in puzzles:
         start = time()
         solution, search = puzzle.traverse(agent)
         stop = time()
-        print(
-            f'\033[92m Indonesian Dot Puzzle #{puzzle.id} solved in {(stop - start) * 1000:.3} ms using {agent}.\033[0m')
+
+        total.append(stop - start)
         saving_file_path = f'{RESOURCES}{puzzle.id}_{agent}_'
 
         try:
@@ -129,16 +130,11 @@ def run(agent):
             f.close()
         except (FileNotFoundError, FileExistsError, IsADirectoryError):
             print(f"File path resulted in an error and was ignored.")
+    print(f'\033[92m Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.\033[0m')
 
 
 agents = [agents.make(x) for x in AGENTS]
 p = Pool(len(agents))
 p.map(run, agents)
-# threads = [Thread(target=run, args=(x,)) for x in agents]
-"""
-for thread in threads:
-    thread.start()
-
-for thread in threads:
-    thread.join()"""
+p.close()
 print('Done')

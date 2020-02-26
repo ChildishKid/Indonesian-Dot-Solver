@@ -83,7 +83,7 @@ class Node:
         self._state = state
         self.g = 0
         self.h = 0
-        self.depth = 0
+        self._depth = 0 if not predecessor else predecessor.depth + 1
 
     @property
     def length(self):
@@ -91,7 +91,7 @@ class Node:
 
     @property
     def width(self):
-        return int(sqrt(len(self._state)))
+        return self.length
 
     @property
     def size(self):
@@ -100,10 +100,6 @@ class Node:
     @property
     def depth(self):
         return self._depth
-
-    @depth.setter
-    def depth(self, new_depth):
-        self._depth = new_depth
 
     @property
     def f(self):
@@ -142,7 +138,7 @@ class Node:
 
     def __eq__(self, other):
         if isinstance(other, Node):
-            return self.g == other.g and self.h == other.h and self._state == other._state
+            return self.f == other.f and self._state == other._state
 
     def __str__(self):
         return self._state
@@ -153,7 +149,7 @@ class Node:
 
     def __lt__(self, other):
         if isinstance(other, Node):
-            return self.f < other.f and self._state < other._state
+            return self.f < other.f or (self.f == self.f and self._state < other._state)
 
     def __ge__(self, other):
         if isinstance(other, Node):
@@ -161,7 +157,7 @@ class Node:
 
     def __gt__(self, other):
         if isinstance(other, Node):
-            return self.f > other.f and self._state > other._state
+            return self.f > other.f or (self.f == self.f and self._state > other._state)
 
     def __cmp__(self, other):
         if isinstance(other, Node):
@@ -184,11 +180,14 @@ class Node:
             return self._state == item
 
     def __len__(self):
-        return len(self._state)
+        return self.length
 
     def __iter__(self):
         for x in self._state:
             yield int(x)
+
+    def __hash__(self):
+        return hash(self._state)
 
     def touch(self, action):
         if not (0 <= action < self.size):
@@ -223,7 +222,7 @@ class Node:
         if self._previous_action is None:
             return f'0 {self._state}'
         else:
-            length = int(sqrt(len(self._state)))
+            length = self.length
             row, column = divmod(self._previous_action, length)
             row = chr(row + ord('A'))
             column += 1
