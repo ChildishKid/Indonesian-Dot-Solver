@@ -1,7 +1,7 @@
 from .agent import Agent
-from .dfs_agent import DFSAgent
+from .astar_agent import AStarAgent
 from .bfs_agent import BFSAgent
-from .a_star_agent import AStarAgent
+from .dfs_agent import DFSAgent
 
 __all__ = {'Agent', 'AStarAgent', 'DFSAgent', 'BFSAgent', 'make'}
 

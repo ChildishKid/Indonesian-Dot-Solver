@@ -1,9 +1,9 @@
 class Agent:
     def g(self, n) -> int:
-        return n.count('1')
+        raise NotImplementedError
 
     def h(self, n) -> int:
-        return 0
+        raise NotImplementedError
 
     def __str__(self) -> str:
-        raise NotImplementedError
+        return 'agent'

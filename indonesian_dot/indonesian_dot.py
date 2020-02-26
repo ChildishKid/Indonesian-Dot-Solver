@@ -4,6 +4,7 @@ from multiprocessing.pool import Pool
 from os import getcwd
 from os.path import isfile
 from time import time
+
 import agents
 from envs import Puzzle
 
@@ -62,19 +63,19 @@ def run(agent):
         saving_file_path = f'{RESOURCES}{puzzle.id}_{agent}_'
 
         try:
-            with open(saving_file_path + 'search', 'w') as file:
-                info(f"Saving Puzzle #{puzzle.id}\'s {agent} search data")
-                file.writelines(search)
-                file.close()
+            info(f"Saving Puzzle #{puzzle.id}\'s {agent} search data")
+            with open(saving_file_path + 'search.txt', 'w') as search_file:
+                search_file.writelines(search)
 
-                info(f"Saving Puzzle #{puzzle.id}\'s {agent} solution data")
-                file = open(saving_file_path + 'solution', 'w')
-                file.writelines(solution)
-                file.close()
+            info(f"Saving Puzzle #{puzzle.id}\'s {agent} solution data")
+            with open(saving_file_path + 'solution.txt', 'w') as solution_file:
+                solution_file.writelines(solution)
+
         except (FileNotFoundError, FileExistsError, IsADirectoryError):
             print(f"File path resulted in an error and was ignored.")
 
     print(f'\033[92m Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.\033[0m')
+
 
 parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
 parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
@@ -98,4 +99,3 @@ process_pool.map(run, agents)
 process_pool.close()
 process_pool.join()
 print('Done')
-

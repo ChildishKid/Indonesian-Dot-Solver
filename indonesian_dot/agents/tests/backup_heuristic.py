@@ -1,4 +1,4 @@
-lst = list(n)
+"""lst = list(n)
 length = n.length
 count = 0
 while 1 in lst:
@@ -22,3 +22,4 @@ while 1 in lst:
     count += 1
 
 return count
+"""
