@@ -1,5 +1,4 @@
 from heapq import heappush, heappop
-from logging import info
 
 from spaces import Node
 
@@ -47,13 +46,13 @@ reset() -> None
 class Puzzle:
     __puzzle_id = 0
 
-    def __init__(self, root_state):
+    def __init__(self, root_state, max_length=2 ** 100, max_depth=2 ** 100):
         self._puzzle_id = Puzzle.__puzzle_id
         Puzzle.__puzzle_id += 1
 
-        self._root_state = Node(root_state)
-        self._max_length = self._root_state.size
-        self._max_depth = self._root_state.size
+        self.root_state = root_state
+        self.max_length = max_length
+        self.max_depth = max_depth
 
     @property
     def id(self):
@@ -65,26 +64,7 @@ class Puzzle:
 
     @root_state.setter
     def root_state(self, new_root_state):
-        info(f'Root state for puzzle #{self._puzzle_id} has been set to {new_root_state}')
         self._root_state = Node(new_root_state)
-
-    @property
-    def max_depth(self):
-        return self._max_depth
-
-    @max_depth.setter
-    def max_depth(self, new_max_depth):
-        info(f'Maximum depth for puzzle #{self._puzzle_id} has been set to {new_max_depth}')
-        self._max_depth = new_max_depth
-
-    @property
-    def max_length(self):
-        return self._max_length
-
-    @max_length.setter
-    def max_length(self, new_max_length):
-        info(f'Maximum length for puzzle #{self._puzzle_id} has been set to appropriate length of {new_max_length}')
-        self._max_length = new_max_length
 
     @property
     def goal_state(self):
@@ -93,8 +73,8 @@ class Puzzle:
     def traverse(self, agent):
         root = self._root_state
         size = self._root_state.size
-        max_depth = self._max_depth if str(agent) == 'dfs' else 2 ** self._root_state.size
-        max_length = self._max_length if not str(agent) == 'dfs' else 2 ** self._root_state.size
+        max_depth = self.max_depth if str(agent) == 'dfs' else 2 ** 100
+        max_length = self.max_length if not str(agent) == 'dfs' else 2 ** 100
         goal = self.goal_state
 
         root.g = agent.g(root)

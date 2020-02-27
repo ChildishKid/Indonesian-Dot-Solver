@@ -41,9 +41,7 @@ def convert_puzzle():
             max_l = l_arr[2]
             state = l_arr[3]
 
-            puzzle = Puzzle(state)
-            puzzle.max_depth = max_d
-            puzzle.max_length = max_l
+            puzzle = Puzzle(state, max_length=max_l, max_depth=max_d)
             puzzles.append(puzzle)
 
             curr_line += 1
@@ -77,25 +75,26 @@ def run(agent):
     print(f'\033[92m Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.\033[0m')
 
 
-parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
-parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
-args = parser.parse_args()
+if __name__ == '__main__':
+    parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
+    parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
+    args = parser.parse_args()
 
-if args.verbose:
-    getLogger().setLevel(INFO)
+    if args.verbose:
+        getLogger().setLevel(INFO)
 
-if 'indonesian_dot' not in DEFAULT_DIR:
-    internal_error('indonesian_dot.py must be run inside of "indonesian_dot" folder.')
+    if 'indonesian_dot' not in DEFAULT_DIR:
+        internal_error('indonesian_dot.py must be run inside of "indonesian_dot" folder.')
 
-if not isfile(DEFAULT_FILE):
-    internal_error(f'File {DEFAULT_FILE} not found.')
+    if not isfile(DEFAULT_FILE):
+        internal_error(f'File {DEFAULT_FILE} not found.')
 
-puzzles = []
-convert_puzzle()
-agents = [agents.make(x) for x in ['dfs', 'bfs', 'astar']]
+    puzzles = []
+    convert_puzzle()
+    agents = [agents.make(x) for x in ['dfs', 'bfs', 'astar']]
 
-process_pool = Pool(len(agents))
-process_pool.map(run, agents)
-process_pool.close()
-process_pool.join()
-print('Done')
+    process_pool = Pool(len(agents))
+    process_pool.map(run, agents)
+    process_pool.close()
+    process_pool.join()
+    print('Done')
