@@ -1,4 +1,6 @@
 def run(arguments):
+    from time import time
+
     agent = arguments[0]
     puzzle_list = arguments[1]
     resource = arguments[2]
@@ -30,7 +32,7 @@ if __name__ == '__main__':
     from multiprocessing.pool import Pool
     from os import getcwd
     from os.path import isfile
-    from time import time
+
     import agents
     from envs import Puzzle
 
