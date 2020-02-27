@@ -1,6 +1,6 @@
 \section{Challenges}
 
-\subsection{Relational Modelling}
+\subsection{Relational Modeling}
 
 A large portion of time leading to the completion of the project was attributed to understanding how subjects should be linked. This process was judged to be difficult since the domain requirements can be ambiguous at times. To resolve this issue, an experiment was conducted using the three main subjects of the domain: agents (search algorithms), puzzles (graphs), and nodes (board state).
 \\
@@ -37,4 +37,21 @@ Overall, by performing this experimentation and discovering why the logical arch
 \begin{figure}[H]
 \includegraphics[width=0.75\linewidth]{assets/schema.png}
 \caption{Entity Relationship Diagram of Indonesian Dot Solver} \label{fig2}
+\end{figure}
+
+\subsection{Touch Redundancy}
+
+Every state of the Indonesian Dot puzzle has actions equivalent to the size of the board. For example, if the board size 25 (or 5x5), then there are 25 actions to choose from. Whenever a traversal was made, it used to be that the puzzle object would touch every action on a node and if it was visited, then it would ignore the action. Yet, checking is an expensive operation especially when the board size increases in size. The touch redundancy issue refers to the issue of having to check for $2^{2n}$ actions in the worst case, where $n$ is the size of the board. This is called the touch redundancy issue and can be seen in the following Figure: 
+
+\begin{figure}[H]
+\includegraphics[width=0.75\linewidth]{assets/touch_redundancy.png}
+\caption{Average Run Time of DFS, BFS, and A* on 7 Puzzles with Touch Redundancy Issue} \label{fig3}
+\end{figure}
+
+To resolve this issue, we discovered that the order of actions leading to the goal state was not important. More formally, the solution path (in actions) can be any combination of the solution set. This also implies that the system needs only to check $2^n$ actions in the worst case. This discovery greatly helped reduce the run time of the system, as can be seen below:
+
+
+\begin{figure}[H]
+\includegraphics[width=0.75\linewidth]{assets/touch_redundancy_2.png}
+\caption{Average Run Time of DFS, BFS, and A* on 7 Puzzles without Touch Redundancy Issue} \label{fig4}
 \end{figure}
