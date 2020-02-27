@@ -34,7 +34,7 @@ if __name__ == '__main__':
     from os.path import isfile
 
     import agents
-    from envs import Puzzle
+    import envs
 
     parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
     args = parser.parse_args()
@@ -84,7 +84,7 @@ if __name__ == '__main__':
             max_l = l_arr[2]
             state = l_arr[3]
 
-            puzzle = Puzzle(state, max_length=max_l, max_depth=max_d)
+            puzzle = envs.Puzzle(state, max_length=max_l, max_depth=max_d)
             puzzles.append(puzzle)
 
             curr_line += 1
