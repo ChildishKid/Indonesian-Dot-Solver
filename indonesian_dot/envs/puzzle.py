@@ -73,10 +73,20 @@ class Puzzle:
     def traverse(self, agent):
         root = self._root_state
         size = self._root_state.size
-        max_depth = self.max_depth if str(agent) == 'dfs' else 2 ** 100
-        max_length = self.max_length if not str(agent) == 'dfs' else 2 ** 100
-        goal = self.goal_state
 
+        if str(agent) == 'dfs':
+            max_depth = self.max_depth
+            max_length = 2 ** 100
+
+            def lt(orig, other):
+                return orig.depth > other.depth or (orig.depth == other.depth and orig.state < other.state)
+
+            Node.__lt__ = lt
+        else:
+            max_depth = 2 ** 100
+            max_length = self.max_length
+
+        goal = self.goal_state
         root.g = agent.g(root)
         root.h = agent.h(root)
 
