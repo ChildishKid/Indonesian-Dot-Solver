@@ -12,6 +12,9 @@ DEFAULT_DIR = getcwd()
 RESOURCES = DEFAULT_DIR[:DEFAULT_DIR.rfind('/')] + '/resources/'
 DEFAULT_FILE = RESOURCES + 'test'
 
+puzzles = []
+agent_list = ['dfs', 'bfs', 'astar']
+
 
 def internal_error(msg):
     print(f'\033[91m {msg} \033[0m')
@@ -89,12 +92,10 @@ if __name__ == '__main__':
     if not isfile(DEFAULT_FILE):
         internal_error(f'File {DEFAULT_FILE} not found.')
 
-    puzzles = []
     convert_puzzle()
-    agents = [agents.make(x) for x in ['dfs', 'bfs', 'astar']]
-
-    process_pool = Pool(len(agents))
-    process_pool.map(run, agents)
+    agent_list = [agents.make(x) for x in agent_list]
+    process_pool = Pool(len(agent_list))
+    process_pool.map(run, agent_list)
     process_pool.close()
     process_pool.join()
     print('Done')

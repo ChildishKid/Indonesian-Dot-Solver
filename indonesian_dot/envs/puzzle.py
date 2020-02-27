@@ -46,7 +46,7 @@ reset() -> None
 class Puzzle:
     __puzzle_id = 0
 
-    def __init__(self, root_state, max_length=2 ** 100, max_depth=2 ** 100):
+    def __init__(self, root_state, max_depth=0, max_length=0):
         self._puzzle_id = Puzzle.__puzzle_id
         Puzzle.__puzzle_id += 1
 
