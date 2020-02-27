@@ -102,7 +102,6 @@ class Puzzle:
 
         visited = []
         unvisited = []
-        seen = set()
 
         solution = None
 
@@ -114,7 +113,6 @@ class Puzzle:
         while unvisited and max_length > 0:
             max_length -= 1
             current_node = heappop(unvisited)
-            seen.add(current_node)
             visited.append(current_node)
 
             if current_node.depth + 1 < max_depth:
@@ -122,19 +120,16 @@ class Puzzle:
 
                 for i in range(start, size, 1):
                     child = current_node.touch(i)
-                    if child not in seen:
-                        info(f'puzzle #{self._puzzle_id} discovered new node {str(child)} from {str(current_node)}')
-                        child.g = agent.g(child)
-                        child.h = agent.h(child)
-                        heappush(unvisited, child)
-                        seen.add(child)
+                    child.g = agent.g(child)
+                    child.h = agent.h(child)
 
-                        if goal in child:
-                            info(f'puzzle #{self._puzzle_id} found the goal state')
-                            visited.append(child)
-                            solution = child
-                            unvisited.clear()
-                            break
+                    heappush(unvisited, child)
+
+                    if goal in child:
+                        visited.append(child)
+                        solution = child
+                        unvisited.clear()
+                        break
 
         if not solution:
             solution = 'no solution'
