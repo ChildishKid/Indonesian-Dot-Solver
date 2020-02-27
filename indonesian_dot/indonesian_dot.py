@@ -93,8 +93,9 @@ if __name__ == '__main__':
         internal_error(f'Line #{curr_line} does not have appropriate attributes.')
 
     execution_plan = list(puzzle_iterator())
-    process_pool = Pool(len(agent_list))
-    process_pool.map(run, execution_plan)
-    process_pool.close()
-    process_pool.join()
+
+    pool = Pool(len(agent_list))
+    pool.imap_unordered(run, execution_plan)
+    pool.close()
+    pool.join()
     print('Done')
