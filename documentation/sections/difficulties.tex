@@ -2,7 +2,7 @@
 
 \subsection{Relational Modeling}
 
-A large portion of time leading to the completion of the project was attributed to understanding how subjects should be linked. This process was judged to be difficult since the domain requirements can be ambiguous at times. To resolve this issue, an experiment was conducted using the three main subjects of the domain: agents (search algorithms), puzzles (graphs), and nodes (board state).
+A large portion of time leading to the completion of the project was attributed to understanding how subjects should be linked. This process was judged to be difficult since some domain requirements can be ambiguous. To resolve this issue, an experiment was conducted using the three main subjects of the domain: agents (search algorithms), puzzles (graphs), and nodes (board states).
 \\
 \\
 
@@ -30,9 +30,9 @@ The first finding also suggests that agents should not have direct access to the
 \caption{Sequence Diagram of Indonesian Dot Solver} \label{fig1}
 \end{figure}
 
-This leads to the next and last finding: A puzzle and an agent cannot have a many-to-many relational type because agent no longer has a reference to a puzzle. Moreover, many nodes are used by one puzzle. Therefore, the combination of both the agent and the node identifies the puzzle that it belongs to. This makes sense since each node points to it's predecessor, with the root node uniquely linked to the puzzle it belongs to (assuming there are no duplicate lines in the test file). Therefore, the second finding suggests that the logical architecture should be modelled after statement (iv).\\
+This leads to the second finding: A puzzle and an agent cannot have a many-to-many relational type because agent no longer has a reference to a puzzle. Moreover, many nodes are used by one puzzle. Therefore, the combination of both the agent and the node identifies the puzzle that it belongs to. This makes sense since each node points to it's predecessor, with the root node uniquely linked to the puzzle it belongs to (assuming there are no duplicate lines in the test file). Therefore, the second finding suggests that the logical architecture should be modelled after statement (iv).\\
 
-Overall, by performing this experimentation and discovering why the logical architecture performed well under different scenarios, we were able to create a classification plan for classifying each domain requirement into one that belongs to agent, puzzles, or nodes. This experimentation also helped us maximize the performance of the overall system.
+Overall, by performing this experimentation and discovering why the logical architecture performed well under different scenarios, we were able to create a classification plan for classifying each domain requirement into one that belongs to agents, puzzles, or nodes. This experimentation also helped us maximize the performance of the overall system.
 
 \begin{figure}[H]
 \includegraphics[width=0.75\linewidth]{assets/schema.png}
@@ -41,14 +41,14 @@ Overall, by performing this experimentation and discovering why the logical arch
 
 \subsection{Touch Redundancy}
 
-Every state of the Indonesian Dot puzzle has actions equivalent to the size of the board. For example, if the board size 25 (or 5x5), then there are 25 actions to choose from. Whenever a traversal was made, it used to be that the puzzle object would touch every action on a node and if it was visited, then it would ignore the action. Yet, checking is an expensive operation especially when the board size increases in size. The touch redundancy issue refers to the issue of having to check for $2^{2n}$ actions in the worst case, where $n$ is the size of the board. This is called the touch redundancy issue and can be seen in the following Figure: 
+Every state of the Indonesian Dot puzzle has actions equivalent to the size of the board. For example, if the board size 25 (or 5x5), then there are 25 actions to choose from. Whenever a traversal was made, it used to be that the puzzle object would touch every action on a node and if it was visited, then it would ignore the action. Yet, checking is an expensive operation especially when the board size increases in size. The touch redundancy issue refers to the issue of having to check for $2^{2n}$ actions in the worst case, where $n$ is the size of the board. This is depicted in the following Figure: 
 
 \begin{figure}[H]
 \includegraphics[width=0.75\linewidth]{assets/touch_redundancy.png}
 \caption{Average Run Time of DFS, BFS, and A* on 7 Puzzles with Touch Redundancy Issue} \label{fig3}
 \end{figure}
 
-To resolve this issue, we discovered that the order of actions leading to the goal state was not important. More formally, the solution path (in actions) can be any combination of the solution set. This also implies that the system needs only to check $2^n$ actions in the worst case. This discovery greatly helped reduce the run time of the system, as can be seen below:
+To resolve this issue, we discovered that the order of actions leading to the goal state did not matter. More formally, the solution path (in actions) can be any combination of the solution set. This also implies that the system would check for $2^n$ actions in the worst case. This discovery greatly helped reduce the run time of the system:
 
 
 \begin{figure}[H]
