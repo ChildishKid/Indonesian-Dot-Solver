@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-from logging import info, getLogger, INFO
 from multiprocessing.pool import Pool
 from os import getcwd
 from os.path import isfile
@@ -25,7 +24,6 @@ def convert_puzzle():
     lines = open(DEFAULT_FILE).readlines()
     curr_line = 1
 
-    info(f"Reading the contents of '{DEFAULT_FILE}'")
     try:
         for line in lines:
             if line == '\n':
@@ -64,11 +62,9 @@ def run(agent):
         saving_file_path = f'{RESOURCES}{puzzle.id}_{agent}_'
 
         try:
-            info(f"Saving Puzzle #{puzzle.id}\'s {agent} search data")
             with open(saving_file_path + 'search.txt', 'w') as search_file:
                 search_file.writelines(search)
 
-            info(f"Saving Puzzle #{puzzle.id}\'s {agent} solution data")
             with open(saving_file_path + 'solution.txt', 'w') as solution_file:
                 solution_file.writelines(solution)
 
@@ -80,11 +76,7 @@ def run(agent):
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
-    parser.add_argument('-v', '--verbose', help='enable verbose logging.', action="store_true")
     args = parser.parse_args()
-
-    if args.verbose:
-        getLogger().setLevel(INFO)
 
     if 'indonesian_dot' not in DEFAULT_DIR:
         internal_error('indonesian_dot.py must be run inside of "indonesian_dot" folder.')
