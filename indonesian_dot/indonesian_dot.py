@@ -1,3 +1,5 @@
+import cProfile
+
 import agents
 import envs
 
@@ -25,6 +27,10 @@ For any help, run the program with the help command:
 def run(arguments):
     from time import time
 
+
+    """x = cProfile.Profile()
+    x.enable()"""
+
     agent = arguments[0]
     puzzle_list = arguments[1]
     resource = arguments[2]
@@ -47,6 +53,9 @@ def run(arguments):
 
         except (FileNotFoundError, FileExistsError, IsADirectoryError):
             print(f"File path resulted in an error and was ignored.")
+
+    """x.disable()
+    x.print_stats(sort='time')"""
 
     print(f'Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.')
 
