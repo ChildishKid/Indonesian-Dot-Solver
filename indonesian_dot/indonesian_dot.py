@@ -48,7 +48,7 @@ def run(arguments):
         except (FileNotFoundError, FileExistsError, IsADirectoryError):
             print(f"File path resulted in an error and was ignored.")
 
-    print(f'\033[92m Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.\033[0m')
+    print(f'Agent {agent} average time is {(sum(total) / len(total)) * 1000:.3} ms.')
 
 
 if __name__ == '__main__':
