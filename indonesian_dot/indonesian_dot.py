@@ -1,5 +1,5 @@
-from os import listdir
-
+import agents
+import envs
 
 def run(arguments):
     from time import time
@@ -34,9 +34,7 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
     from multiprocessing.pool import Pool
     from os.path import isfile, isdir, exists
-
-    import agents
-    import envs
+    from os import listdir
 
     def internal_error(msg):
         parser.print_help()
