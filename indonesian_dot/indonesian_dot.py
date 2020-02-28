@@ -1,6 +1,26 @@
 import agents
 import envs
 
+"""
+
+The entry point of the Indonesian Puzzle Solver.
+
+For the program to function properly, a path to a directory needs to be provided.
+    Example: python3 indonesian_dot.py ../resources
+    
+Note: This path needs to contain a file with the name test.
+
+The test file needs to contain 4 variables per line: 
+    the dimension of the puzzle
+    the maximum depth
+    the maximum length
+    the starting state of the puzzle
+
+For any help, run the program with the help command:
+    python3 indonesian_dot.py -h
+
+"""
+
 
 def run(arguments):
     from time import time
