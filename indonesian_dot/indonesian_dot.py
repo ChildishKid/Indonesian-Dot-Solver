@@ -1,6 +1,7 @@
 import agents
 import envs
 
+
 def run(arguments):
     from time import time
 
@@ -42,9 +43,11 @@ if __name__ == '__main__':
         print(msg)
         exit(2)
 
+
     def puzzle_iterator():
         for agent in agent_list:
-            yield [agent, puzzles, args.DIR + ('/' if '/' in args.DIR else '\\')]
+            yield [agent, puzzles, args.DIR]
+
 
     parser = ArgumentParser(description='Solves the Indonesian Dot Puzzle')
     parser.add_argument("DIR", help="Directory containing a file names test")
@@ -63,8 +66,8 @@ if __name__ == '__main__':
         internal_error('Multiple test files detected.')
     elif not test_file:
         internal_error('Test file not found.')
-
-    test_file = args.DIR + ('/' if '/' in args.DIR else '\\') + test_file[0]
+    args.DIR += '/' if '/' in args.DIR else '\\'
+    test_file = args.DIR + test_file[0]
 
     if isdir(test_file):
         internal_error(f'{test_file} not a file.')
@@ -99,4 +102,4 @@ if __name__ == '__main__':
     pool.imap_unordered(run, execution_plan)
     pool.close()
     pool.join()
-    print('Done')
+
