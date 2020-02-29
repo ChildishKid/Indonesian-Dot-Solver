@@ -9,7 +9,7 @@ to its goal configuration, where all tokens have their white side up (w).
 
 ## Dependencies
 
-- Python 3.x
+- Python 3.7+
 
 No additional modules are needed for running the application
 
@@ -29,7 +29,7 @@ No additional modules are needed for running the application
 
 3. Run the python module 'indonesian_dot.py':
     ```shell script
-        py indonesian_dot.py
+        python indonesian_dot.py
     ```
 
 **Note**: the program will only run successfully if the *resources* folder exists within *indoensian_dot* folder

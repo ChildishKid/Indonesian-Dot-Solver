@@ -96,7 +96,7 @@ class Node:
         self._predecessor = predecessor
         self._previous_action = action
         self._state = state
-        
+
         self._depth = 0 if not predecessor else predecessor.depth + 1
         self._g = 0
         self._h = 0
@@ -136,12 +136,11 @@ class Node:
     def g(self, new_g):
         self._g = new_g
         self._f = new_g + self._h
-  
+
     @h.setter
     def h(self, new_h):
         self._h = new_h
         self._f = new_h + self._g
-
 
     @property
     def predecessor(self):
@@ -211,7 +210,7 @@ class Node:
 
     def search_artifact(self):
         return f'{self._f} {self._g} {self._h} {self._state}'
-                       
+
     def solution_artifact(self):
         if self._previous_action is None:
             return f'0 {self._state}'

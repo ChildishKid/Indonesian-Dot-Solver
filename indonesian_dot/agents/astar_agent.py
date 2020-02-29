@@ -5,7 +5,6 @@ class AStarAgent(Agent):
     def g(self, n) -> int:
         return n.depth
 
-
     def h(self, n) -> int:
         x = n.state.count('1')
         count = 0

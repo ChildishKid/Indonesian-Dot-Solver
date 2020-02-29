@@ -121,4 +121,3 @@ if __name__ == '__main__':
     pool.imap_unordered(run, execution_plan)
     pool.close()
     pool.join()
-    
