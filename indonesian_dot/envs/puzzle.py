@@ -1,5 +1,4 @@
 from heapq import heappush, heappop
-from logging import info
 
 from spaces import Node
 
@@ -47,14 +46,14 @@ reset() -> None
 class Puzzle:
     __puzzle_id = 0
 
-    def __init__(self, root_state):
+    def __init__(self, root_state, max_depth=0, max_length=0):
         self._puzzle_id = Puzzle.__puzzle_id
         Puzzle.__puzzle_id += 1
 
-        self._root_state = Node(root_state)
-        self._max_length = self._root_state.size
-        self._max_depth = self._root_state.size
-
+        self.root_state = root_state
+        self.max_length = max_length
+        self.max_depth = max_depth
+        
     @property
     def id(self):
         return self._puzzle_id
@@ -65,26 +64,7 @@ class Puzzle:
 
     @root_state.setter
     def root_state(self, new_root_state):
-        info(f'Root state for puzzle #{self._puzzle_id} has been set to {new_root_state}')
         self._root_state = Node(new_root_state)
-
-    @property
-    def max_depth(self):
-        return self._max_depth
-
-    @max_depth.setter
-    def max_depth(self, new_max_depth):
-        info(f'Maximum depth for puzzle #{self._puzzle_id} has been set to {new_max_depth}')
-        self._max_depth = new_max_depth
-
-    @property
-    def max_length(self):
-        return self._max_length
-
-    @max_length.setter
-    def max_length(self, new_max_length):
-        info(f'Maximum length for puzzle #{self._puzzle_id} has been set to appropriate length of {new_max_length}')
-        self._max_length = new_max_length
 
     @property
     def goal_state(self):
@@ -93,16 +73,25 @@ class Puzzle:
     def traverse(self, agent):
         root = self._root_state
         size = self._root_state.size
-        max_depth = self._max_depth if str(agent) == 'dfs' else 2 ** self._root_state.size
-        max_length = self._max_length if not str(agent) == 'dfs' else 2 ** self._root_state.size
-        goal = self.goal_state
 
+        if str(agent) == 'dfs':
+            max_depth = self.max_depth
+            max_length = 2 ** 100
+
+            def lt(orig, other):
+                return orig.depth > other.depth or (orig.depth == other.depth and orig.state < other.state)
+
+            Node.__lt__ = lt
+        else:
+            max_depth = 2 ** 100
+            max_length = self.max_length
+
+        goal = self.goal_state
         root.g = agent.g(root)
         root.h = agent.h(root)
 
         visited = []
         unvisited = []
-        seen = set()
 
         solution = None
 
@@ -114,7 +103,6 @@ class Puzzle:
         while unvisited and max_length > 0:
             max_length -= 1
             current_node = heappop(unvisited)
-            seen.add(current_node)
             visited.append(current_node)
 
             if current_node.depth + 1 < max_depth:
@@ -122,19 +110,16 @@ class Puzzle:
 
                 for i in range(start, size, 1):
                     child = current_node.touch(i)
-                    if child not in seen:
-                        info(f'puzzle #{self._puzzle_id} discovered new node {str(child)} from {str(current_node)}')
-                        child.g = agent.g(child)
-                        child.h = agent.h(child)
-                        heappush(unvisited, child)
-                        seen.add(child)
+                    child.g = agent.g(child)
+                    child.h = agent.h(child)
 
-                        if goal in child:
-                            info(f'puzzle #{self._puzzle_id} found the goal state')
-                            visited.append(child)
-                            solution = child
-                            unvisited.clear()
-                            break
+                    heappush(unvisited, child)
+
+                    if goal in child:
+                        visited.append(child)
+                        solution = child
+                        unvisited.clear()
+                        break
 
         if not solution:
             solution = 'no solution'
