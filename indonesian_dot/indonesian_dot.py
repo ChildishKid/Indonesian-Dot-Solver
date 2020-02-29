@@ -24,7 +24,6 @@ For any help, run the program with the help command:
 
 def run(arguments):
     from time import time
-
     agent = arguments[0]
     puzzle_list = arguments[1]
     resource = arguments[2]
@@ -122,4 +121,4 @@ if __name__ == '__main__':
     pool.imap_unordered(run, execution_plan)
     pool.close()
     pool.join()
-
+    
