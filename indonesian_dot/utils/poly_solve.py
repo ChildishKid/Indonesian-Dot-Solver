@@ -1,8 +1,18 @@
 from numpy import array, sqrt, zeros, identity, dot
 
 """
-Example:
 
+Resource:
+http://mathworld.wolfram.com/LightsOutPuzzle.html
+This class is used to simply check for solutions, provided the background of knowing that there is one.
+
+No checks are made on whether or not the solution path is valid or not.
+
+Solution returns an array of 0 and 1, where 1 implies that the action at a position should be touched.
+
+The input must be a 1D array with 0 meaning on, 1 means off.
+
+Example:
 state = array([
         1, 1, 0, 1, 0, 0,
         1, 1, 0, 1, 1, 1,
