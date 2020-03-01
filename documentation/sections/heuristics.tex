@@ -1,1 +1,15 @@
 \section{Heuristics}
+
+In trying to determine a heuristic function, we created a simple heuristic based on Hamming distance in order to serve as a baseline, as shown in Figure 8. Essentially, h1(n) was the number of 1’s (since our goal state is a board full of 0’s). Given the nature of the problem, this heuristic makes a lot of sense, but fails to consider groups and ordering. For example, a board with 3 scattered 1’s is definitely not closer to the goal state than a board with 5 1’s in the shape of a plus (this would reach the goal state in one move).
+\\
+
+From the heuristics above, we were able to stem some different variations and test them out. We created and tested heuristic functions that determined the number of pairs of 1's (h2) and number of three consecutive 1's (h3) as well (both overlapping and not) but this proved to yield a longer search result than our original heuristic. Both algorithms are shown in Figure 9 and 10, respectively. In retrospect, this makes sense as they don’t take into consideration other alternatives that could prove to be better moves. Taking the same example as above, a board with some scattered pairs of 1’s would be chosen over a board with 5 1’s in the shape of a plus. Due to the size restriction of h2 and h3, you would have several boards that, while yielding the same heuristics, would not be comparable at all.
+\\
+
+Another variation, shown in Figure 11, involved selecting the board containing a move that could clear the most amount of 1’s (haround). However, this suffers from the same problem as mentioned above. This performs a more exhaustive search since it goes through every board that could potentially clear 5 1’s first, and then 4, and so on. 
+\\
+
+Lastly, we tested a heuristic that would return the number of cleared rows (hrows) from top to bottom, as shown in Figure 12. The Indonesian Dot puzzle is based on a popular game called Light’s Out, and one strategy involves performing such technique. However, this proved not as efficient as we had planned as towards the end, the algorithm involved going through each row once more in order to clear any remaining 1’s. 
+\\
+
+From all these heuristics, the one selected was the initial one proposed (h1) that we will term h(n), which instead of returning the number of 1’s, simply returns the number of potential moves that could be done, as shown in Figure 13. This involves first verifying that the modulus of the number of 1’s for 5, 4 and 3, respectfully in that order, is not 1 and 2 has no moves could flip exactly 1 or 2 nodes. This heuristic is not without its fault as it merely works by counting the numbers of 1’s and assumes their positions instead of take into account ordering.

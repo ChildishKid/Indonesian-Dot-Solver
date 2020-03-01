@@ -1,1 +1,32 @@
 \section{Analysis}
+\subsection{Overview}
+The code is implemented such that the only difference between the solving algorithms lie in there heuristic values. As the rest of the code is shared. Though an important impact of the heuristic is how many iterations the main part of the program goes through. The iterations tend to take longer to calculate than the heuristics, thus is ideal to take a bit longer to calculate at to result in fewer iterations. Such is rather apparent with the various experiments, in which depending on the implementation some algorithms would perform better than others. Such can be seen in figures of the difficulties section.
+\newline
+\newline
+
+During the solving of the puzzle, how the board is represented varies. Thus it is important to minimize conversion time. The indonesian\_dot/spaces/node.py \#touch(self, action) function performs said conversion to an integer. Initially the approach was to perform string concatenation then convert the binary representation to an integer. However it was found that directly calculating the integer value from the binary was faster. Most likely because the same calculations would still be performed in addition to the overhead of performing the concatenations.
+\newline
+\newline
+
+With the aim of minimizing memory usage, indonesian\_dot/spaces/node.py has the minimal number of features. As a simple way to have code run faster is for both the memory reading and the memory writing operations done by the operating system to take the minimal amount of time. Which requires the the operations to be taken out in the highest level of the memory hierarchy possible.
+\newline
+\newline
+\subsection{Algorithm Comparison}
+
+Regarding the three solving algorithms, in terms of time to complete, typically A* and BFS tended to have rather similar times with A* being slightly faster than BFS most of the time. Of the three DFS tended to be the slowest. The difference in times tended to increase as the size of the puzzles increased.
+\newline
+\newline
+
+The calculating of g heuristic in terms of operation complexity and function calls is essentially the same, thus the h heuristic value is what sets them a part for speed. Though both A* and BFS have the exact same code for calculating h values; while DFS has a simple, though irrelevant, way to calculate DFS's h value.
+\newpage
+\subsection{Algorithm Contrast}
+
+In terms of function calls (raw data shown in Appendix section), DFS tended to have about 80 times as many as A*. Such helps to explain why DFS is so slow. Another reason for DFS's slowness is that the algorithm is essentially a brute force approach solution, while the others algorithms used tend to take educated guesses (reduces iteration count) to speed up their solving of the puzzle.
+\newline
+\newline
+
+Due to DFS's minimalist approach in calculating heuristics, in the event that it would take the same search path as the other algorithms, it would have the best time. Though such would merely be the result of a specific puzzle configuration, than by design. As DFS is a rather brutish approach for solving.
+\newline
+\newline
+
+To solve the puzzle no repeated moves are required, as they would simply end up canceling out. Also the order of the moves does not matter. The program is implemented so that for search paths, moves cannot be repeated, however the result is that the order that the moves are selected in is fixed. The drawback of the ordering is that the resulting search space is the power set of the remaining possible moves (excluding the empty set), starting from the last move in the order. While subsequent search spaces will be smaller, it can still be rather costly to located the first move in the order. As every move before it will be a waste of time, amounting only in determining that those starting moves are not in the solution. Therefore solutions that have consecutive moves in the ordering are ideal for both DFS and BFS, while A* prefers paths formed from sparse moves.
