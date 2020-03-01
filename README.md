@@ -19,8 +19,7 @@ No additional modules are needed for running the application
     ```shell script
     git clone git@github.com:Ra-Ni/Indonesian-Dot-Solver.git
     ```
-   **Note**: The github repository is currently private and not accessible to the public.
-   
+    
 2. Move into the directory 'indonesian_dot':
     
    ```shell script
