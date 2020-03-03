@@ -31,8 +31,6 @@ No additional modules are needed for running the application
         python indonesian_dot.py
     ```
 
-**Note**: the program will only run successfully if the *resources* folder exists within *indoensian_dot* folder
-
 ## Configuration
 
 1. Move into resources:
